@@ -2,14 +2,14 @@ import json
 
 import pandas
 
-excel_file = pandas.ExcelFile("course_list.xlsx")
+excel_file = pandas.ExcelFile("C:\\Users\\ricksonre\\Documents\\GitHub\\HCI-Courses-Project\\HCI_Course\\course_list.xlsx")
 print(excel_file.sheet_names)
 
 data = []
 
-
 def import_sheet(sheet):
     df = pandas.read_excel(excel_file, sheet)
+
 
     name = df.columns[1]
     description = df.iloc[0][1]
@@ -20,7 +20,18 @@ def import_sheet(sheet):
 
     criteria = []
 
-    for i in range(7,13):
+    headers_index = []
+    #find indexes
+    for i in range(7,50):
+        try:
+            if(df.iloc[i][0] == "Learning outcomes/goals:"):
+                headers_index.append(i)
+            if(df.iloc[i][0] == "List of topics covered from most recent course offering:"):
+                headers_index.append(i)
+        except:
+            continue
+
+    for i in range(7,headers_index[0]):
         try:
             Cname, weight = df.iloc[i][1], df.iloc[i][2]
         except:
@@ -33,7 +44,7 @@ def import_sheet(sheet):
 
     learning_goal = ""
 
-    for i in range(14, 19):
+    for i in range(headers_index[0], headers_index[1]):
         try:
             learning_goal += df.iloc[i][1]
         except:
@@ -41,16 +52,21 @@ def import_sheet(sheet):
 
     topics = []
 
-    for i in range(20, 40):
+    for i in range(headers_index[1], 40):
         try:
             week, title = df.iloc[i][1], df.iloc[i][2]
         except:
             continue
-        if week is not None and week != "" and week == week:
+
+        if week is None:  week = ""
+        
+        if title is not None and title is not "" and title == title:
+        #if week is not None and week != "" and week == week:
             topics.append({
-                "week": week,
+               "week": week,
                 "title": title,
             })
+
 
     data.append({
         "name": name,
