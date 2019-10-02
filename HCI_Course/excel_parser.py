@@ -7,6 +7,10 @@ print(excel_file.sheet_names)
 
 data = []
 
+#verifies if the cell has a value
+def has_value(cell):
+    return cell is not None and cell != "" and cell == cell
+        
 def import_sheet(sheet):
     df = pandas.read_excel(excel_file, sheet)
 
@@ -28,15 +32,15 @@ def import_sheet(sheet):
                 headers_index.append(i)
             if(df.iloc[i][0] == "List of topics covered from most recent course offering:"):
                 headers_index.append(i)
-        except:
+        except IndexError:
             continue
 
     for i in range(7,headers_index[0]):
         try:
             Cname, weight = df.iloc[i][1], df.iloc[i][2]
-        except:
+        except IndexError:
             continue
-        if Cname is not None and Cname != "" and Cname == Cname:
+        if has_value(Cname):
             criteria.append({
                 "name": Cname,
                 "weight": weight,
@@ -46,8 +50,9 @@ def import_sheet(sheet):
 
     for i in range(headers_index[0], headers_index[1]):
         try:
-            learning_goal += df.iloc[i][1]
-        except:
+            if has_value(df.iloc[i][1]):
+                learning_goal += df.iloc[i][1]
+        except IndexError:
             continue
 
     topics = []
@@ -55,12 +60,12 @@ def import_sheet(sheet):
     for i in range(headers_index[1], 40):
         try:
             week, title = df.iloc[i][1], df.iloc[i][2]
-        except:
-            continue
+        except IndexError:
+           continue
 
         if week is None:  week = ""
         
-        if title is not None and title is not "" and title == title:
+        if has_value(title):
         #if week is not None and week != "" and week == week:
             topics.append({
                "week": week,
