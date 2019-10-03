@@ -1,17 +1,19 @@
 import json
 import matplotlib.pyplot as plt
 import math
-
 import operator
-import json
 from collections import Counter
-from nltk.corpus import stopwords
 import nltk
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
 import string
+import gensim
+from gensim.corpora import Dictionary
 
 #may have to download both
 #nltk.download('stopwords')
 #nltk.download('punkt')
+#nltk.download('wordnet')
 
 #load the json
 def load_data():
@@ -43,27 +45,45 @@ def get_time_frequency(data = load_data()):
 
     return dates_counter
 
-#gets the most used expressions
-def get_terms(data = load_data(),number = 10):
-    counter = Counter()
-
+#get a list of all terms
+def get_terms(data = load_data()):
     #things to ignore
     punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ['rt', 'via']
+    stop = stopwords.words('english') + punctuation
+    lem = WordNetLemmatizer()
 
-    #reads all topics and tokizize them and count
+    #get all terms
+    terms = []
     for sheet in data:
         for topic in sheet['topics']:
-            counter.update(
-                [word for word in nltk.word_tokenize(topic["title"].lower()) if word not in stop]
-            )
+            #test for lda
+            terms.extend([lem.lemmatize(word) for word in nltk.word_tokenize(
+                topic["title"].lower()) if word not in stop])
 
-    #retuns the top <number> of most commons terms
+    #print(terms)
+    return terms
+
+#returns the most common terms
+def count_terms(number = 10):
+    terms = get_terms() 
+    counter = Counter(terms)
     #print(counter.most_common(number))
     return counter.most_common(number)
-    
+
+#lda not working properly
+def get_topics(data = load_data()):
+    terms = get_terms()
+    dictionary = Dictionary([terms])
+    term_matrix = [dictionary.doc2bow(topic) for topic in [terms]]
+
+    lda = gensim.models.ldamodel.LdaModel
+    ldamodel = lda(term_matrix, num_topics = 2, id2word = dictionary)
+
+    print(ldamodel.print_topics())
+
 
 #------------------test---------------#
 #get_time_frequency()
-get_terms()
+#count_terms()
+#get_topics()
 
