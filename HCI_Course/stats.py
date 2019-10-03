@@ -6,6 +6,7 @@ import operator
 import json
 from collections import Counter
 from nltk.corpus import stopwords
+import nltk
 import string
 
 def load_data():
@@ -21,6 +22,8 @@ def get_time_frequency(data = load_data()):
     dates_counter = {}
 
     for course in data:
+        #because of the formating some values are nan and that fucks with everything
+        # So this kinda fix it
         if str(course["last_taught"]) == "nan" or str(course["last_taught"]) == "":
             course["last_taught"] = "unknown"
 
@@ -29,31 +32,30 @@ def get_time_frequency(data = load_data()):
         else:
             dates_counter[str(course["last_taught"])] = 1
 
+    #matplot to visualize if you want
     #plt.bar(list(dates_counter.keys()), list(dates_counter.values()), width = 0.75)
     #plt.show()
 
     return dates_counter
 
-#todo
-def get_topics():
-    return
-    """
+
+def get_topics(data = load_data()):
     counter = Counter()
 
     punctuation = list(string.punctuation)
     stop = stopwords.words('english') + punctuation + ['rt', 'via']
 
-    file = open("HCI_Course\course_list.xlsx", "r")
-    data = json.load(file)
+    for topics in data:
+        for topic in topics['topics']:
+            counter.update(
+                [word for word in topic["title"] if word not in stop]
+            )
 
-    for topics in data['topics']:
-     break
-
-    file.close() 
       
-
-    #print(counter.most_common(10))
-    """
+    print(counter.most_common(10))
     
 
-get_time_frequency()
+#get_time_frequency()
+get_topics()
+
+#nltk.download('stopwords')
