@@ -50,9 +50,10 @@ def get_topics():
      break
 
     file.close() 
-    """   
+      
 
     #print(counter.most_common(10))
+    """
     
 
 get_time_frequency()
