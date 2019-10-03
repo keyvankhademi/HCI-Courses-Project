@@ -13,6 +13,7 @@ import string
 #nltk.download('stopwords')
 #nltk.download('punkt')
 
+#load the json
 def load_data():
     file = open("data.json", "r")
     data = json.load(file)
@@ -36,7 +37,7 @@ def get_time_frequency(data = load_data()):
         else:
             dates_counter[str(course["last_taught"])] = 1
 
-    #matplot to visualize if you want
+    #matplot to visualize if you want to
     #plt.bar(list(dates_counter.keys()), list(dates_counter.values()), width = 0.75)
     #plt.show()
 
@@ -46,19 +47,23 @@ def get_time_frequency(data = load_data()):
 def get_terms(data = load_data(),number = 10):
     counter = Counter()
 
+    #things to ignore
     punctuation = list(string.punctuation)
     stop = stopwords.words('english') + punctuation + ['rt', 'via']
 
-    for topics in data:
-        for topic in topics['topics']:
+    #reads all topics and tokizize them and count
+    for sheet in data:
+        for topic in sheet['topics']:
             counter.update(
                 [word for word in nltk.word_tokenize(topic["title"].lower()) if word not in stop]
             )
 
-    print(counter.most_common(number))
+    #retuns the top <number> of most commons terms
+    #print(counter.most_common(number))
     return counter.most_common(number)
     
 
+#------------------test---------------#
 #get_time_frequency()
 get_terms()
 
