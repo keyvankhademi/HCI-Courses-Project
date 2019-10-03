@@ -9,6 +9,10 @@ from nltk.corpus import stopwords
 import nltk
 import string
 
+#may have to download both
+#nltk.download('stopwords')
+#nltk.download('punkt')
+
 def load_data():
     file = open("data.json", "r")
     data = json.load(file)
@@ -38,8 +42,8 @@ def get_time_frequency(data = load_data()):
 
     return dates_counter
 
-
-def get_topics(data = load_data()):
+#gets the most used expressions
+def get_terms(data = load_data(),number = 10):
     counter = Counter()
 
     punctuation = list(string.punctuation)
@@ -48,14 +52,12 @@ def get_topics(data = load_data()):
     for topics in data:
         for topic in topics['topics']:
             counter.update(
-                [word for word in topic["title"] if word not in stop]
+                [word for word in nltk.word_tokenize(topic["title"]) if word not in stop]
             )
 
-      
-    print(counter.most_common(10))
+    return counter.most_common(number)
     
 
 #get_time_frequency()
-get_topics()
+get_terms()
 
-#nltk.download('stopwords')
