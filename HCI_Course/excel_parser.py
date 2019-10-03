@@ -2,7 +2,7 @@ import json
 
 import pandas
 
-excel_file = pandas.ExcelFile("C:\\Users\\ricksonre\\Documents\\GitHub\\HCI-Courses-Project\\HCI_Course\\course_list.xlsx")
+excel_file = pandas.ExcelFile("course_list.xlsx")
 print(excel_file.sheet_names)
 
 data = []
