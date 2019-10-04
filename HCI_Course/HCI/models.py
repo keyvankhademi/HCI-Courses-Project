@@ -6,6 +6,9 @@ from django.db import models
 class University(models.Model):
     name = models.CharField(max_length=100, verbose_name="University Name", unique=True)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Course(models.Model):
     name = models.CharField(max_length=500, verbose_name="Course Name", null=False, blank=True)
@@ -22,6 +25,9 @@ class Course(models.Model):
 
     equivalent = models.ManyToManyField('self', symmetrical=True, blank=True)
 
+    def __str__(self):
+        return "{} ({}) in {}".format(self.name, self.code, self.university)
+
     class Meta:
         unique_together = ['code', 'university']
 
@@ -31,6 +37,9 @@ class Criteria(models.Model):
     weight = models.FloatField(verbose_name="Criteria Weight")
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "{} {} in {}".format(self.name, self.weight, self.course.name)
+
     class Meta:
         unique_together = ['name', 'course']
 
@@ -39,6 +48,9 @@ class Topic(models.Model):
     week = models.IntegerField(verbose_name="Number of the Week in Which This Topic Is Taught", null=False)
     description = models.CharField(max_length=500, verbose_name="Topic Description")
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "topic of week {} for {}".format(self.week, self.course.name)
 
     class Meta:
         unique_together = ['week', 'course']
