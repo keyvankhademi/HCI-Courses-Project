@@ -8,8 +8,16 @@ class UniversityAdmin(admin.ModelAdmin):
     pass
 
 
+class TopicInlineAdmin(admin.TabularInline):
+    model = Topic
+
+
+class CriteriaInlineAdmin(admin.TabularInline):
+    model = Criteria
+
+
 class CourseAdmin(admin.ModelAdmin):
-    pass
+    inlines = [TopicInlineAdmin, CriteriaInlineAdmin]
 
 
 class CriteriaAdmin(admin.ModelAdmin):
