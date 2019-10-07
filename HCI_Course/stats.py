@@ -10,26 +10,27 @@ import string
 import gensim
 from gensim.corpora import Dictionary
 
-#may have to download both
-#nltk.download('stopwords')
-#nltk.download('punkt')
-#nltk.download('wordnet')
 
-#load the json
 def load_data():
+    """
+    loads the data.json and return it as a dictionary
+    :return: data as dictionary
+    """
     file = open("data.json", "r")
     data = json.load(file)
     file.close()
     return data
 
-#returns a dictionary with 
-#   key: year, 
-#   value: frequency
-def get_time_frequency(data = load_data()):   
+
+def get_time_frequency(data=load_data()):
+    """
+    :param data: dictionary of all the data
+    :return: a dictionary containing key: year and value: frequency
+    """
     dates_counter = {}
 
     for course in data:
-        #because of the formating some values are nan and that fucks with everything
+        # because of the formating some values are nan and that fucks with everything
         # So this kinda fix it
         if str(course["last_taught"]) == "nan" or str(course["last_taught"]) == "":
             course["last_taught"] = "unknown"
@@ -39,51 +40,61 @@ def get_time_frequency(data = load_data()):
         else:
             dates_counter[str(course["last_taught"])] = 1
 
-    #matplot to visualize if you want to
-    #plt.bar(list(dates_counter.keys()), list(dates_counter.values()), width = 0.75)
-    #plt.show()
+    # matplot to visualize if you want to
+    # plt.bar(list(dates_counter.keys()), list(dates_counter.values()), width = 0.75)
+    # plt.show()
 
     return dates_counter
 
-#get a list of all terms
-def get_terms(data = load_data()):
-    #things to ignore
+
+def get_terms(data=load_data()):
+    """
+
+    :param data: dictionary of all the data
+    :return: list of all terms
+    """
+
+    # things to ignore
     punctuation = list(string.punctuation)
     stop = stopwords.words('english') + punctuation
     lem = WordNetLemmatizer()
 
-    #get all terms
+    # get all terms
     terms = []
     for sheet in data:
         for topic in sheet['topics']:
-            #test for lda
+            # test for lda
             terms.extend([lem.lemmatize(word) for word in nltk.word_tokenize(
                 topic["title"].lower()) if word not in stop])
 
-    #print(terms)
     return terms
 
-#returns the most common terms
-def count_terms(number = 10):
-    terms = get_terms() 
+
+def count_terms(number=10):
+    """
+    :param number: number of the terms to return
+    :return:  top common terms
+    """
+
+    terms = get_terms()
     counter = Counter(terms)
-    #print(counter.most_common(number))
+
     return counter.most_common(number)
 
-#lda not working properly
-def get_topics(data = load_data()):
+
+# lda not working properly
+def get_topics(data=load_data()):
     terms = get_terms()
     dictionary = Dictionary([terms])
     term_matrix = [dictionary.doc2bow(topic) for topic in [terms]]
 
     lda = gensim.models.ldamodel.LdaModel
-    ldamodel = lda(term_matrix, num_topics = 2, id2word = dictionary)
+    ldamodel = lda(term_matrix, num_topics=2, id2word=dictionary)
 
     print(ldamodel.print_topics())
 
 
-#------------------test---------------#
-#get_time_frequency()
-#count_terms()
-#get_topics()
-
+# ------------------test---------------#
+print(get_time_frequency())
+# count_terms()
+# get_topics()
