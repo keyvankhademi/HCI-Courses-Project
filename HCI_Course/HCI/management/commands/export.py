@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 import json
+import os
+from datetime import datetime
 
 from HCI.models import University, Course, Criteria, Topic
 
@@ -23,6 +25,7 @@ class Command(BaseCommand):
         data = []
         for course in Course.objects.all():
             data.append({
+                "slug": course.slug,
                 "name": course.name,
                 "code": course.code,
                 "university": course.university.name,
@@ -33,10 +36,7 @@ class Command(BaseCommand):
                 "last_taught": course.last_taught.strftime("%m/%d/%Y, %H:%M:%S"),
                 "instructor": course.instructor,
                 "learning_goals": course.learning_goals,
-                "equivalent": [{
-                    "code": eq.code,
-                    "university": eq.university.name,
-                } for eq in course.equivalent.all()]
+                "equivalent": [eq.slug for eq in course.equivalent.all()]
             })
         return data
 
@@ -46,10 +46,7 @@ class Command(BaseCommand):
             data.append({
                 "name": criteria.name,
                 "weight": criteria.weight,
-                "course": {
-                    "code": criteria.course.code,
-                    "university": criteria.course.university.name,
-                }
+                "course": criteria.course.slug,
             })
         return data
 
@@ -59,16 +56,17 @@ class Command(BaseCommand):
             data.append({
                 "week": topic.week,
                 "description": topic.description,
-                "course": {
-                    "code": topic.course.code,
-                    "university": topic.course.university.name,
-                },
+                "course": topic.course.slug,
             })
         return data
 
     def handle(self, *args, **options):
-        self.export("export/university.json", self.get_university_data())
-        self.export("export/courses.json", self.get_courses_data())
-        self.export("export/criteria.json", self.get_criteria_data())
-        self.export("export/topic.json", self.get_topic_data())
+
+        url = os.path.join("export", datetime.now().strftime("%Y-%m-%d %H-%M-%S"))
+        os.mkdir(url)
+
+        self.export(os.path.join(url, "university.json"), self.get_university_data())
+        self.export(os.path.join(url, "courses.json"), self.get_courses_data())
+        self.export(os.path.join(url, "criteria.json"), self.get_criteria_data())
+        self.export(os.path.join(url, "topic.json"), self.get_topic_data())
 
