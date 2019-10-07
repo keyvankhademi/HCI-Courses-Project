@@ -36,6 +36,7 @@ class Command(BaseCommand):
         for datum in data:
             uni = University()
             uni.name = datum['name']
+            uni.short_name = datum['short_name']
             uni.save()
 
     def import_courses(self, data):

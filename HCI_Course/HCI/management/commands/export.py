@@ -18,6 +18,7 @@ class Command(BaseCommand):
         for uni in University.objects.all():
             data.append({
                 "name": uni.name,
+                "short_name": uni.short_name,
             })
         return data
 

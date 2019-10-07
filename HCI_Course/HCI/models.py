@@ -10,7 +10,8 @@ def generate_slug():
 
 
 class University(models.Model):
-    name = models.CharField(max_length=100, verbose_name="University Name", unique=True)
+    name = models.CharField(max_length=100, verbose_name="University Name", unique=True, null=False, blank=False)
+    short_name = models.CharField(max_length=100, verbose_name="University Short Name", null=False, blank=False)
 
     def __str__(self):
         return str(self.name)
