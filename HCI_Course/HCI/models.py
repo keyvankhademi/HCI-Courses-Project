@@ -23,10 +23,10 @@ class Course(models.Model):
     university = models.ForeignKey(University, verbose_name="University", on_delete=models.CASCADE)
     description = models.TextField(verbose_name="Course Description", null=False, blank=True)
 
-    url = models.URLField(verbose_name="Most Recent Course Website", null=True)
+    url = models.URLField(verbose_name="Most Recent Course Website", null=True, blank=True)
     prerequisites = models.CharField(verbose_name="Course Prerequisites", max_length=500, null=True, blank=True)
     core_for_major = models.BooleanField(verbose_name="Core for Major?", null=False)
-    last_taught = models.DateField(verbose_name="Last Taught")
+    last_taught = models.DateField(verbose_name="Last Taught", null=True, blank=True)
     instructor = models.CharField(verbose_name="Most Recent Instructor", max_length=100, null=False, blank=True)
     learning_goals = models.TextField(verbose_name="Learning outcome/goals", null=False, blank=True)
     complete = models.BooleanField(verbose_name="Is it complete", default=False)
