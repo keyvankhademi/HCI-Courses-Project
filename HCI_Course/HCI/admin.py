@@ -18,7 +18,7 @@ class CriteriaInlineAdmin(admin.TabularInline):
 
 class CourseAdmin(admin.ModelAdmin):
     inlines = [TopicInlineAdmin, CriteriaInlineAdmin]
-    list_display = ['name', 'university', 'complete', 'verified']
+    list_display = ['name', 'code', 'university', 'complete', 'verified']
     list_filter = ['complete', 'verified', 'university__name']
     search_fields = ['name', 'code']
 
