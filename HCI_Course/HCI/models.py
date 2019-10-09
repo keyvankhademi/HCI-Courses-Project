@@ -56,7 +56,7 @@ class Criteria(models.Model):
 
 class Topic(models.Model):
     week = models.IntegerField(verbose_name="Number of the Week in Which This Topic Is Taught", null=False)
-    description = models.CharField(max_length=500, verbose_name="Topic Description")
+    description = models.CharField(max_length=800, verbose_name="Topic Description")
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE)
 
     def __str__(self):
