@@ -33,6 +33,7 @@
             {% endif %}
             <a href="{% url 'add_university' %}" class="list-group-item list-group-item-action bg-light">Add University</a>
             <a href="{% url 'add_course' %}" class="list-group-item list-group-item-action bg-light">Add Course</a>
+            <a href="{% url 'word_cloud' %}" class="list-group-item list-group-item-action bg-light">Word Clouds</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-light">Logout</a>
             {% endif %}

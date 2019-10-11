@@ -32,5 +32,8 @@ urlpatterns = [
     path('account/password-change-done/', TemplateView.as_view(template_name='password_change_done.html'), name="password_change_done"),
     path('add/university/', UniversityCreateView.as_view(), name='add_university'),
     path('add/course/', CourseCreateView.as_view(), name='add_course'),
+
+    path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
+
     path('', views.homepage, name='homepage'),
 ]

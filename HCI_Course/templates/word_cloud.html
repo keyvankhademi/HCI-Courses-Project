@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Word Clouds{% endblock %}
+
+{% block content %}
+    <h2>Word Clouds</h2>
+    <button class="btn btn-primary">Generate Word Clouds</button>
+    <div>
+        <h3>Course Descriptions</h3>
+        <img src="{% static 'wc.png' %}"/>
+    </div>
+{% endblock %}
