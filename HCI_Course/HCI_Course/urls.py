@@ -18,12 +18,14 @@ from django.urls import path
 from HCI import views
 from django.contrib.auth import views as auth_views
 
-from HCI.views import signup_view
+from HCI.views import signup_view, UniversityCreateView, CourseCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('signup/', signup_view, name='signup'),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/signup/', signup_view, name='signup'),
+    path('add/university', UniversityCreateView.as_view(), name='add_university'),
+    path('add/course', CourseCreateView.as_view(), name='add_course'),
     path('', views.homepage, name='homepage'),
 ]
