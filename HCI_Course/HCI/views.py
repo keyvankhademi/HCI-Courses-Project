@@ -2,6 +2,7 @@ from boto.connection import HTTPRequest
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -9,7 +10,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 from HCI.models import University, Course
 
@@ -48,3 +49,14 @@ class CourseCreateView(CreateView):
     success_url = reverse_lazy('add_course')
     fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
               'last_taught', 'instructor', 'learning_goals', 'equivalent']
+
+
+class UserProfileView(UpdateView):
+    model = User
+    template_name = 'profile.html'
+    success_url = reverse_lazy('profile')
+    fields = ['username', 'first_name', 'last_name', 'email']
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
