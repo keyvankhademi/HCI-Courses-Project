@@ -26,12 +26,17 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Start Bootstrap</div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action bg-light">Home</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Sign Up</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Login</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Add University</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Add Course</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Logout</a>
+            <a href="{% url 'homepage' %}" class="list-group-item list-group-item-action bg-light">Home</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'signup' %}" class="list-group-item list-group-item-action bg-light">Sign Up</a>
+                <a href="{% url 'login' %}" class="list-group-item list-group-item-action bg-light">Login</a>
+            {% endif %}
+            <a href="{% url 'add_university' %}" class="list-group-item list-group-item-action bg-light">Add University</a>
+            <a href="{% url 'add_course' %}" class="list-group-item list-group-item-action bg-light">Add Course</a>
+            <a href="{% url 'word_cloud' %}" class="list-group-item list-group-item-action bg-light">Word Clouds</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-light">Logout</a>
+            {% endif %}
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -50,32 +55,43 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Sign Up <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Logout <span class="sr-only">(current)</span></a>
-                    </li>
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="#">Link</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item dropdown">#}
-{#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
-{#                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#                            Dropdown#}
-{#                        </a>#}
-{#                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">#}
-{#                            <a class="dropdown-item" href="#">Action</a>#}
-{#                            <a class="dropdown-item" href="#">Another action</a>#}
-{#                            <div class="dropdown-divider"></div>#}
-{#                            <a class="dropdown-item" href="#">Something else here</a>#}
-{#                        </div>#}
-{#                    </li>#}
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'login' %}">Login <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'signup' %}">Sign Up <span class="sr-only">(current)</span></a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'profile' %}">Profile <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <p style="margin-top: 8px">Hello, {{ user.username }} </p>
+                        </li>
+                    {% endif %}
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="#">Link</a>#}
+                    {#                    </li>#}
+                    {#                    <li class="nav-item dropdown">#}
+                    {#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+                    {#                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+                    {#                            Dropdown#}
+                    {#                        </a>#}
+                    {#                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">#}
+                    {#                            <a class="dropdown-item" href="#">Action</a>#}
+                    {#                            <a class="dropdown-item" href="#">Another action</a>#}
+                    {#                            <div class="dropdown-divider"></div>#}
+                    {#                            <a class="dropdown-item" href="#">Something else here</a>#}
+                    {#                        </div>#}
+                    {#                    </li>#}
                 </ul>
             </div>
         </nav>

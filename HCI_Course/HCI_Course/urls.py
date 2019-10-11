@@ -15,9 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
+
 from HCI import views
+from django.contrib.auth import views as auth_views
+
+from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.homepage),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/signup/', signup_view, name='signup'),
+    path('accounts/profile/', UserProfileView.as_view(), name='profile'),
+    path('accounts/change-password/', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name="password_change"),
+    path('account/password-change-done/', TemplateView.as_view(template_name='password_change_done.html'), name="password_change_done"),
+    path('add/university/', UniversityCreateView.as_view(), name='add_university'),
+    path('add/course/', CourseCreateView.as_view(), name='add_course'),
+
+    path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
+
+    path('', views.homepage, name='homepage'),
 ]

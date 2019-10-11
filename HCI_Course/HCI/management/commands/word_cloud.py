@@ -18,3 +18,5 @@ class Command(BaseCommand):
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         plt.show()
+
+        wordcloud.to_file("word_cloud/wc.png")
