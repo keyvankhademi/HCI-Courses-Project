@@ -3,14 +3,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
+from HCI import auxfunctions as afoo
 
 # Create your views here.
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, View
 
 from HCI.models import University, Course
 
@@ -60,3 +61,11 @@ class UserProfileView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+class ChartsView(View):
+    def get_year_hist(request):
+        data = afoo.get_years()
+        return JsonResponse(data)
+
+    def get_terms_freq(request):
+        data = afoo.get_terms_freq()
+        return JsonResponse(data)

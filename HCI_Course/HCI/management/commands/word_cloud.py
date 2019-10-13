@@ -14,7 +14,7 @@ class Command(BaseCommand):
         text = " ".join(course.description for course in Course.objects.all())
         text = text.translate({ord(key): None for key in string.punctuation})
 
-        wordcloud = WordCloud().generate(text)
+        wordcloud = WordCloud(background_color='white', width=900, height=600, max_words=50).generate(text)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         plt.show()
