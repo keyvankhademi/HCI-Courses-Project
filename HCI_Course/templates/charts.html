@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Word Clouds{% endblock %}
+{% block title %}Charts{% endblock %}
 
 {% block content %}
     <h2>Word Clouds</h2>
-    <button class="btn btn-primary" onclick="generate()">Generate Word Clouds</button>
+    <button class="btn btn-primary" onclick="generate()">Generate Charts</button>
     <script>
         function generate() {
             const Http = new XMLHttpRequest();
-            const url = '{% url 'generate_word_cloud' %}';
+            const url = '{% url 'generate_charts' %}';
             Http.open("GET", url);
             Http.send();
 
@@ -19,11 +19,11 @@
         }
     </script>
     <div>
-        <h3>Course Descriptions</h3>
-        <img src="{% static 'wc.png' %}"/>
+        <h3>Year Histogram Chart</h3>
+        <img src="{% static 'year_hist.png' %}"/>
     </div>
     <div>
-        <h3>Learning Goals</h3>
-        <img src="{% static 'wc_lg.png' %}"/>
+        <h3>University Pie</h3>
+        <img src="{% static 'uni_pie.png' %}"/>
     </div>
 {% endblock %}

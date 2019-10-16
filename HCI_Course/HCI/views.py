@@ -13,6 +13,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
 
 from HCI.models import University, Course
+from HCI.utils.charts import generate_charts
+from HCI.utils.word_cloud import generate_word_cloud
 
 
 def homepage(request):
@@ -60,3 +62,12 @@ class UserProfileView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+
+def generate_word_cloud_view(request):
+    generate_word_cloud()
+    return HttpResponse(status=200)
+
+
+def generate_charts_view(request):
+    generate_charts()
+    return HttpResponse(status=200)
