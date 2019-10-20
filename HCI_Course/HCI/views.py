@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 
@@ -13,6 +13,12 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
 
 from HCI.models import University, Course
+from HCI.utils import charts
+from HCI.utils.word_cloud import generate_word_cloud
+
+
+
+
 
 
 def homepage(request):
@@ -60,3 +66,21 @@ class UserProfileView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+
+def generate_word_cloud_view(request):
+    generate_word_cloud()
+    return HttpResponse(status=200)
+
+
+def generate_charts_view(request):
+    charts.generate_charts()
+    return HttpResponse(status=200)
+
+
+def get_year_hist(request):
+        data = charts.get_years()
+        return JsonResponse(data)
+
+def get_terms_freq(request):
+    data = charts.get_terms_freq()
+    return JsonResponse(data)

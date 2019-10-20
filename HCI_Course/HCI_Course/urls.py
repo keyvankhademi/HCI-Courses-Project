@@ -20,7 +20,8 @@ from django.views.generic import TemplateView
 from HCI import views
 from django.contrib.auth import views as auth_views
 
-from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView
+from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
+    generate_charts_view, get_year_hist, get_terms_freq
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +35,12 @@ urlpatterns = [
     path('add/course/', CourseCreateView.as_view(), name='add_course'),
 
     path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
+    path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),
+
+    path('charts/', TemplateView.as_view(template_name='charts.html'), name='charts'),
+    path('charts/generate', generate_charts_view, name='generate_charts'),
+    path('charts/years/frequency/', get_year_hist, name='year_hist'),
+    path('charts/terms/frequency/', get_terms_freq, name='terms_hist'),
 
     path('', views.homepage, name='homepage'),
 ]
