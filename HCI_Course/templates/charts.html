@@ -3,6 +3,8 @@
 
 {% block title %}Charts{% endblock %}
 
+
+
 {% block content %}
 
     <h2>Charts</h2>
@@ -20,7 +22,7 @@
     Size: <input id="size_input" type="number" min='0'>
     <br><br>
     
-    <canvas id="bar-chart" width="900" height="600"></canvas>
+    <canvas id="chart-content" width="150px" height="80px"></canvas>
     <br>
     <br>
     
@@ -35,7 +37,10 @@
 
 
 
-
+    <div id="dashboard_div">
+        <div id="filter_div"></div>
+        <div id="chart_div"></div>
+    </div>
 
 
 

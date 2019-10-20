@@ -1,5 +1,64 @@
 $(document).ready(function()
 {
+    //////////////////////////////////////////////
+    var g_data = [];
+    
+    $.ajax
+        ({
+            url: 'googletest',
+            success: function (data)
+            {
+                g_data = data.data
+            }
+        });
+
+
+    google.charts.load('current', { 'packages': ['corechart', 'controls'] });
+    google.charts.setOnLoadCallback(draw_chart);
+
+    function draw_chart()
+    {
+        var data = google.visualization.arrayToDataTable(g_data);
+
+        var dashboard = new google.visualization.Dashboard(
+            document.getElementById('dashboard_div'));
+
+        // Create a range slider, passing some options
+        var donutRangeSlider = new google.visualization.ControlWrapper({
+            'controlType': 'NumberRangeFilter',
+            'containerId': 'filter_div',
+            'options': {
+                'filterColumnLabel': 'year',
+                'vAxis':
+                { 'format': 'none' }
+            }
+        });
+
+        // Create a pie chart, passing some options
+        var barChart = new google.visualization.ChartWrapper({
+            'chartType': 'Histogram',
+            'containerId': 'chart_div',
+            'options': {
+                'width': 900,
+                'height': 400,
+                'legend': 'right',
+                'colors': ['#aad2ff','Yellow', '#aad2ff'],
+                'histogram':
+                {
+                    'bucketSize':1,
+                    
+                },
+                
+            },
+            
+        });
+
+        dashboard.bind(donutRangeSlider, barChart);
+        dashboard.draw(data);
+    }
+
+
+    /////////////////////////////////////////////////////////
 
     var d_labels = []
     var d_values = []
@@ -59,7 +118,7 @@ $(document).ready(function()
     function create_chart()
     {
         if(m_chart != null)m_chart.destroy();
-        m_chart = new Chart(document.getElementById("bar-chart"), {
+        m_chart = new Chart(document.getElementById("chart-content"), {
             type: d_type,
             data: {
                 labels: d_labels.slice(0,d_size),

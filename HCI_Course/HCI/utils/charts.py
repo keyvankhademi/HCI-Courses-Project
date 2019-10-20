@@ -14,7 +14,6 @@ import string
 import gensim
 from gensim.corpora import Dictionary
 
-
 from HCI.models import Course, University
 
 def generate_charts():
@@ -54,7 +53,7 @@ def generate_charts():
 #frequency of syllabus years
 def get_years():
     years = [course.last_taught.year for course in Course.objects.all()]
-    df = pd.Series(years).value_counts()
+    df = pd.Series(years).value_counts(sort=False)
     data = {
         'title': "syllabus years histogram",
         'labels': df.keys().tolist(),
@@ -84,3 +83,15 @@ def get_terms_freq():
         data['values'].append(y)
 
     return data
+
+
+def g_test():
+    years = [course.last_taught.year for course in Course.objects.all()]
+    uni = [course.university.name for course in Course.objects.all()]
+    
+    data = [['university','year']]
+
+    for u,y in zip(uni,years):
+        data.append([u,y])
+
+    return {'data':data}

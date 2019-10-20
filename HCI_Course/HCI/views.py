@@ -84,3 +84,7 @@ def get_year_hist(request):
 def get_terms_freq(request):
     data = charts.get_terms_freq()
     return JsonResponse(data)
+
+def g_test(request):
+    data = charts.g_test()
+    return JsonResponse(data)
