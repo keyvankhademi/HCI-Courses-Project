@@ -1,4 +1,4 @@
-#!C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project-Deploy\HCI_Course\venv\Scripts\python.exe
+#!C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project\venv\Scripts\python.exe
 
 # Author: 
 # Contact: grubert@users.sf.net

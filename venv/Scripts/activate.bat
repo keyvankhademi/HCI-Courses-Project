@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project-Deploy\HCI_Course\venv"
+set "VIRTUAL_ENV=C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project\venv"
 
 if not defined PROMPT (
     set "PROMPT=$P$G"
