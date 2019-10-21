@@ -131,3 +131,8 @@ LOGIN_REDIRECT_URL = reverse_lazy('homepage')
 LOGOUT_REDIRECT_URL = reverse_lazy('homepage')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
