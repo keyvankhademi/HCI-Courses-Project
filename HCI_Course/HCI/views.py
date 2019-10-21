@@ -85,6 +85,6 @@ def get_terms_freq(request):
     data = charts.get_terms_freq()
     return JsonResponse(data)
 
-def g_test(request):
-    data = charts.g_test()
+def get_sent_freq(request):
+    data = charts.get_sent_freq()
     return JsonResponse(data)

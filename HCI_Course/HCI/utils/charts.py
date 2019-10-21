@@ -13,6 +13,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 import string
 import gensim
 from gensim.corpora import Dictionary
+import re
 
 from HCI.models import Course, University
 
@@ -85,13 +86,25 @@ def get_terms_freq():
     return data
 
 
-def g_test():
-    years = [course.last_taught.year for course in Course.objects.all()]
-    uni = [course.university.name for course in Course.objects.all()]
-    
-    data = [['university','year']]
+#sentences frequency
+def get_sent_freq():
+    desc = "\n".join(course.description for course in Course.objects.all())
 
-    for u,y in zip(uni,years):
-        data.append([u,y])
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+    d = []
+    for sentence in tokenizer.tokenize(desc):
+        d.extend(sentence.split(','))
+    count = Counter(d)
 
-    return {'data':data}
+    data = {
+        'title': "sentence histogram",
+        'labels': [],
+        'values': []
+    }
+
+    for x, y in count.most_common(20):
+        data['labels'].append(x)
+        data['values'].append(y)
+
+    return data
+
