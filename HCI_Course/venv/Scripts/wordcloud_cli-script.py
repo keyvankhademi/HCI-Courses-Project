@@ -1,4 +1,4 @@
-#!C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project\HCI_Course\venv\Scripts\python.exe
+#!C:\Users\Keyvan\Desktop\UBCWork2\HCI-Courses-Project-Deploy\HCI_Course\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'wordcloud==1.5.0','console_scripts','wordcloud_cli'
 __requires__ = 'wordcloud==1.5.0'
 import re
