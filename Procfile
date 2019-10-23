@@ -1,1 +1,0 @@
-web: gunicorn HCI_Course.wsgi --log-file -
