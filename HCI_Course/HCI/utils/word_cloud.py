@@ -12,12 +12,14 @@ def generate_word_cloud():
     text = " ".join(course.description for course in Course.objects.all())
     text = text.translate({ord(key): None for key in string.punctuation})
 
-    wordcloud = WordCloud().generate(text)
+    wordcloud = WordCloud(background_color='white', width=600,
+                          height=450, max_words=50).generate(text)
     wordcloud.to_file("word_cloud/wc.png")
 
     text = " ".join(course.learning_goals for course in Course.objects.all())
     text = text.translate({ord(key): None for key in string.punctuation})
 
-    wordcloud = WordCloud().generate(text)
+    wordcloud = WordCloud(background_color='white', width=600,
+                          height=450, max_words=50).generate(text)
     wordcloud.to_file("word_cloud/wc_lg.png")
 

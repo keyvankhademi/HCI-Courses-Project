@@ -21,7 +21,7 @@ from HCI import views
 from django.contrib.auth import views as auth_views
 
 from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
-    generate_charts_view, get_year_hist, get_terms_freq, g_test
+    generate_charts_view, get_year_hist, get_terms_freq, get_sent_freq, g_test, geo_data, filter_test
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,8 +41,11 @@ urlpatterns = [
     path('charts/generate', generate_charts_view, name='generate_charts'),
     path('charts/years/frequency/', get_year_hist, name='year_hist'),
     path('charts/terms/frequency/', get_terms_freq, name='terms_hist'),
+    path('charts/sentences/frequency/', get_sent_freq, name='sent_hist'),
     
     path('charts/googletest', g_test, name='g_test'),
-    
+    path('charts/geodata/', geo_data, name='geo_data'),
+    path('charts/filtertest/', filter_test, name='filter_test'),
+
     path('', views.homepage, name='homepage'),
 ]

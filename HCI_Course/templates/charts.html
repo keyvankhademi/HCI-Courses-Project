@@ -11,6 +11,7 @@
     
     <button id="b_year_hist" class="btn btn-primary">year histogram</button>
     <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
+    <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
     <br><br>
 
     <div style="display: none;" id="b_secondary">
@@ -21,29 +22,44 @@
     <br>
     Size: <input id="size_input" type="number" min='0'>
     <br><br>
-    
     <canvas id="chart-content" width="150px" height="80px"></canvas>
     <br>
     <br>
     
     <p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>
     <p style="display: none;" id='years_link'>/charts/years/frequency/</p>
+    <p style="display: none;" id='sent_link'>/charts/sentences/frequency/</p>
+    <p style="display: none;" id='geodata_link'>/charts/geodata/</p>
+
+    <br><br>
+    <h2>Country Density</h2>
+    <div id="country_density"></div>
+    <br><br>
+    <h2>Compare</h2>
+    <div id="compare_dashboard">
+        <table>
+                <tr>
+                    <td><div id="compare_filter1"></div></td>
+                    <td><div id="compare_filter2"></div></td>
+                </tr>
+                <tr>
+                    <td><div id="compare_graph1"></div></td>
+                    <td><div id="compare_graph2"></div></td>
+                </tr>
+        </table>
+    </div>
+
+    <h2>Google Histogram Test</h2>
+    <div id="dashboard_div">
+        <div id="filter_div"></div>
+        <div id="chart_div"></div>
+    </div>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="{% static "scripts/charts.js" %}"></script>
-
-
-
-    <div id="dashboard_div">
-        <div id="filter_div"></div>
-        <div id="chart_div"></div>
-    </div>
-
-
-
 
     <h2>Word Clouds</h2>
     <button class="btn btn-primary" onclick="generate()">Generate Charts</button>
