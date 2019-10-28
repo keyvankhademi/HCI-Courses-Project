@@ -6,42 +6,127 @@
 
 
 {% block content %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="{% static "scripts/charts.js" %}"></script>
+<script src="{% static "scripts/singlechart.js" %}"></script>
+<script src="{% static "scripts/comparechart.js" %}"></script>
+<script src="{% static "scripts/geochart.js" %}"></script>
 
-    <h2>Charts</h2>
+<h2>Charts</h2>
+
+<div id="m_main">
+    <button id="m_single" class="btn btn-primary">Single Graphs</button>
+    <button id="m_comp" class="btn btn-primary">Compare</button>
+    <button id="m_geo" class="btn btn-primary">Geographic Data</button>
+    <button id="m_img" class="btn btn-primary">Images</button>
+</div>
+<hr>
+
+<div id='d_main'>
+    <div id='d_single_graphs'>
+        <button id="b_year_hist" class="btn btn-primary">year histogram</button>
+        <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
+        <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
+        <br><br>
+        
+        <div style="display: none;" id="b_secondary">
+            <button id="b_piechart" class="btn btn-secondary">pie chart</button>
+            <button id="b_barchart" class="btn btn-secondary">bar chart</button>
+        </div>
+        
+        <br>
+        Size: <input id="size_input" type="number" min='0'>
+        <br><br>
+        <canvas id="chart-content" width="150px" height="80px"></canvas>
+    </div>
     
-    <button id="b_year_hist" class="btn btn-primary">year histogram</button>
-    <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
-    <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
-    <br><br>
-
-    <div style="display: none;" id="b_secondary">
-        <button id="b_piechart" class="btn btn-secondary">pie chart</button>
-        <button id="b_barchart" class="btn btn-secondary">bar chart</button>
+    <div id='d_compare'>
+        <table>
+            <tr>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Filter
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">All</a>
+                            <a class="dropdown-item" href="#">Canada</a>
+                            <a class="dropdown-item" href="#">USA</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Filter
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">All</a>
+                            <a class="dropdown-item" href="#">Canada</a>
+                            <a class="dropdown-item" href="#">USA</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    a
+                </td>
+                <td>
+                    b
+                </td>
+            </tr>
+        </table>
+        
     </div>
 
-    <br>
-    Size: <input id="size_input" type="number" min='0'>
-    <br><br>
-    
-    <canvas id="chart-content" width="150px" height="80px"></canvas>
-    <br>
-    <br>
-    
-    <p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>
-    <p style="display: none;" id='years_link'>/charts/years/frequency/</p>
-    <p style="display: none;" id='sent_link'>/charts/sentences/frequency/</p>
+    <div id='d_geo_data'>
+        <h2>Country Density</h2>
+        <div id="country_density"></div>
+        <br>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{% static "scripts/charts.js" %}"></script>
-
-
-
-    <div id="dashboard_div">
-        <div id="filter_div"></div>
-        <div id="chart_div"></div>
+        <h2>Region Density</h2>
+        <div id="region_density"></div>
+        <br><br>
     </div>
+
+    <div id='d_images'>
+        <h2>Word Clouds</h2>
+        <button class="btn btn-primary" onclick="generate()">Generate Charts</button>
+        <script>
+            function generate()
+            {
+                const Http = new XMLHttpRequest();
+                const url = '{% url 'generate_charts' %}';
+                Http.open("GET", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) =>
+                {
+                    location.reload();
+                }
+            }
+        </script>
+        <div>
+            <h3>Year Histogram Chart</h3>
+            <img src="{% static 'year_hist.png' %}" />
+        </div>
+        <div>
+            <h3>University Pie</h3>
+            <img src="{% static 'uni_pie.png' %}" />
+        </div>
+    </div>
+</div>
+
+<p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>
+<p style="display: none;" id='years_link'>/charts/years/frequency/</p>
+<p style="display: none;" id='sent_link'>/charts/sentences/frequency/</p>
+<p style="display: none;" id='geodata_link'>/charts/geodata/</p>
+<p style="display: none;" id='compare_link'>/charts/compare/</p>
+
 
 {% endblock %}

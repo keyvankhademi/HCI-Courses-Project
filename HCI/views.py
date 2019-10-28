@@ -66,9 +66,13 @@ def generate_word_cloud_view(request):
     return HttpResponse(status=200)
 
 
+def generate_charts_view(request):
+    charts.generate_charts()
+    return HttpResponse(status=200)
+
 def get_year_hist(request):
-    data = charts.get_years()
-    return JsonResponse(data)
+        data = charts.get_years()
+        return JsonResponse(data)
 
 
 def get_terms_freq(request):
@@ -78,4 +82,19 @@ def get_terms_freq(request):
 
 def get_sent_freq(request):
     data = charts.get_sent_freq()
+    return JsonResponse(data)
+
+
+def g_test(request):
+    data = charts.g_test()
+    return JsonResponse(data)
+
+
+def geo_data(request):
+    data = charts.geo_data()
+    return JsonResponse(data)
+
+
+def compare_data(request):
+    data = charts.compare_data()
     return JsonResponse(data)
