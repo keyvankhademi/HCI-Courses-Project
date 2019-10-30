@@ -25,7 +25,7 @@
                 <td>{{ uni.name }}</td>
                 <td>{{ uni.short_name }}</td>
                 <td><button class="btn btn-primary" onclick="window.location.href='{% url 'university_detail_view' uni.pk %}'">details</button></td>
-                <td><button class="btn btn-warning">edit</button></td>
+                <td><button class="btn btn-warning" onclick="window.location.href='{% url 'university_update' uni.pk %}'">edit</button></td>
                 <td><button class="btn btn-danger" disabled title="Temporarily Disabled">report</button></td>
             </tr>
         {% endfor %}

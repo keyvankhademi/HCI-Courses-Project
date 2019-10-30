@@ -26,8 +26,8 @@
                 <td>{{ course.name }}</td>
                 <td>{{ course.code }}</td>
                 <td>{{ course.university.short_name }}</td>
-                <td><button class="btn btn-primary">details</button></td>
-                <td><button class="btn btn-warning">edit</button></td>
+                <td><button class="btn btn-primary" onclick="window.location.href='{% url 'course_detail_view' course.pk %}'">details</button></td>
+                <td><button class="btn btn-warning" onclick="window.location.href='{% url 'course_update' course.pk %}'">edit</button></td>
                 <td><button class="btn btn-danger" disabled title="Temporarily Disabled">report</button></td>
             </tr>
         {% endfor %}

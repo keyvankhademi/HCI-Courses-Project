@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Course Detail{% endblock %}
+
+{% block content %}
+    <h2>Course</h2>
+
+    <div class="col-md-6 mb-3">
+        <label for="University Name">Name</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.name }}">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">Code</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.code }}">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">University</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.university.name }}">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="description">Description</label>
+        <textarea disabled class="form-control" name="description" cols="40" rows="10" id="description">
+            {{ course.description }}
+        </textarea>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="id_url">Most Recent Course Website</label>
+        <input disabled class="form-control" type="url" name="url"
+               value="{{ course.url }}"
+               maxlength="200" id="id_url">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">Prerequisites</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.prerequisites }}">
+    </div>
+
+    <p>
+        <label for="id_core_for_major">Core for Major</label>
+        <input disabled class="form-control" type="checkbox" name="core_for_major" id="id_core_for_major"
+        {% if course.core_for_major %} checked {% endif %}>
+    </p>
+
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">Last Taught</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.last_taught.year }}">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">Instructor</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.instructor }}">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="description">Learning Goals / Outcome</label>
+        <textarea disabled class="form-control" name="description" cols="40" rows="10" id="description">
+            {{ course.learning_goals }}
+        </textarea>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-warning" onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+        </button>
+    </div>
+
+
+
+{% endblock %}

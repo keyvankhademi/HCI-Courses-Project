@@ -21,7 +21,8 @@ from HCI import views
 from django.contrib.auth import views as auth_views
 
 from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
-    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, UniversityListView, UniversityDetailView
+    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, UniversityListView, UniversityDetailView, \
+    UniversityUpdateView, CourseDetailView, CourseUpdateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,9 +38,12 @@ urlpatterns = [
     path('university/add', UniversityCreateView.as_view(), name='add_university'),
     path('university/list-view', UniversityListView.as_view(), name='university_list_view'),
     path('university/<int:pk>/', UniversityDetailView.as_view(), name='university_detail_view'),
+    path('university/<int:pk>/update', UniversityUpdateView.as_view(), name='university_update'),
 
     path('course/add', CourseCreateView.as_view(), name='add_course'),
     path('course/list-view', CourseListView.as_view(), name='course_list_view'),
+    path('course/<int:pk>/', CourseDetailView.as_view(), name='course_detail_view'),
+    path('cpurse/<int:pk>/update', CourseUpdateView.as_view(), name='course_update'),
 
     path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
     path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),
