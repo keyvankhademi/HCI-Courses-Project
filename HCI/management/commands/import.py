@@ -37,6 +37,10 @@ class Command(BaseCommand):
             uni = University()
             uni.name = datum['name']
             uni.short_name = datum['short_name']
+            uni.country = datum['country']
+            uni.state = datum['state']
+            uni.city = datum['city']
+
             uni.save()
 
     def import_courses(self, data):
