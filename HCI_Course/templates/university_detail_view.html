@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}University Detail{% endblock %}
+
+{% block content %}
+    <h2>University</h2>
+
+    <div class="col-md-6 mb-3">
+        <label for="University Name">Name</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ university.name }}">
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="Short Name">Short Name</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ university.short_name }}">
+    </div>
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-warning">edit</button>
+    </div>
+
+{% endblock %}

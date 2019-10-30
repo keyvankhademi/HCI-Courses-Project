@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+    <h2>Courses</h2>
+
+    <button class="btn btn-primary" onclick="window.location.href = '{% url 'add_course' %}'">Add Course</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Code</th>
+            <th scope="col">University</th>
+            <th scope="col">Details</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Report</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course in object_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ course.name }}</td>
+                <td>{{ course.code }}</td>
+                <td>{{ course.university.short_name }}</td>
+                <td><button class="btn btn-primary">details</button></td>
+                <td><button class="btn btn-warning">edit</button></td>
+                <td><button class="btn btn-danger" disabled title="Temporarily Disabled">report</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

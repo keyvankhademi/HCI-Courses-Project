@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
 from HCI.models import University, Course
 from HCI.utils.word_cloud import generate_word_cloud
@@ -79,3 +79,18 @@ def get_terms_freq(request):
 def get_sent_freq(request):
     data = charts.get_sent_freq()
     return JsonResponse(data)
+
+
+class CourseListView(ListView):
+    model = Course
+    template_name = 'course_list_view.html'
+
+
+class UniversityListView(ListView):
+    model = University
+    template_name = 'university_list_view.html'
+
+
+class UniversityDetailView(DetailView):
+    model = University
+    template_name = 'university_detail_view.html'
