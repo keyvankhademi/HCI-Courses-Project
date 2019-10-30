@@ -1,10 +1,31 @@
 {% extends 'base.html' %}
 {% block title %}Sign Up{% endblock %}
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary" id="menu-toggle">Sign Up</button>
-  </form>
+    <h2>Sign up</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="fieldWrapper">
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                    <div class="info alert-info alert">{{ field.help_text|safe }} </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" id="menu-toggle">Sign Up</button>
+    </form>
 {% endblock %}
