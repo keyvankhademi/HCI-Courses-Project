@@ -6,9 +6,9 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
 from HCI.models import University, Course
 from HCI.utils.word_cloud import generate_word_cloud
@@ -79,3 +79,42 @@ def get_terms_freq(request):
 def get_sent_freq(request):
     data = charts.get_sent_freq()
     return JsonResponse(data)
+
+
+class CourseListView(ListView):
+    model = Course
+    template_name = 'course_list_view.html'
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'course_detail_view.html'
+
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    template_name = 'course_update.html'
+    fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
+              'last_taught', 'instructor', 'learning_goals', 'equivalent']
+
+    def get_success_url(self):
+        return reverse('course_detail_view', None, [self.kwargs.get('pk'), ])
+
+
+class UniversityListView(ListView):
+    model = University
+    template_name = 'university_list_view.html'
+
+
+class UniversityDetailView(DetailView):
+    model = University
+    template_name = 'university_detail_view.html'
+
+
+class UniversityUpdateView(UpdateView):
+    model = University
+    template_name = 'university_update.html'
+    fields = ['name', 'short_name']
+
+    def get_success_url(self):
+        return reverse('university_detail_view', None, [self.kwargs.get('pk'), ])
