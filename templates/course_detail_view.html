@@ -30,6 +30,12 @@
     </div>
 
     <div class="col-md-6 mb-3">
+        <label for="Short Name">Category</label>
+        <input type="text" disabled class="form-control" id="university-name" placeholder=""
+               value="{{ course.category }}">
+    </div>
+
+    <div class="col-md-6 mb-3">
         <label for="id_url">Most Recent Course Website</label>
         <input disabled class="form-control" type="url" name="url"
                value="{{ course.url }}"
@@ -45,7 +51,7 @@
     <p>
         <label for="id_core_for_major">Core for Major</label>
         <input disabled class="form-control" type="checkbox" name="core_for_major" id="id_core_for_major"
-        {% if course.core_for_major %} checked {% endif %}>
+                {% if course.core_for_major %} checked {% endif %}>
     </p>
 
     <div class="col-md-6 mb-3">
@@ -68,9 +74,17 @@
     </div>
 
     <div class="col-md-6 mb-3">
-        <button class="btn btn-warning" onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
-        </button>
+        {% if course.editable %}
+            <button class="btn btn-warning"
+                    onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+            </button>
+        {% else %}
+            <button class="btn btn-warning" disabled title="You Cannot Edit This Course"
+                    onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+            </button>
+        {% endif %}
     </div>
+
 
 
 

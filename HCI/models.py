@@ -1,6 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
 import string
 import random
+
+
 # Create your models here.
 
 
@@ -9,7 +12,14 @@ def generate_slug():
     return ''.join(random.choice(choices) for i in range(10))
 
 
+CATEGORY_CHOICES = {
+    ('Human-Computer Interaction', 'Human-Computer Interaction'),
+    ('Computational Mathematics', 'Computational Mathematics'),
+}
+
+
 class University(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, verbose_name="University Name", unique=True, null=False, blank=False)
     short_name = models.CharField(max_length=100, verbose_name="University Short Name", null=False, blank=False)
 
@@ -18,11 +28,16 @@ class University(models.Model):
 
 
 class Course(models.Model):
-    slug = models.CharField(max_length=10, default=generate_slug, verbose_name="Slug", null=False, blank=False, editable=False, unique=True)
+    slug = models.CharField(max_length=10, default=generate_slug, verbose_name="Slug", null=False, blank=False,
+                            editable=False, unique=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
     name = models.CharField(max_length=500, verbose_name="Course Name", null=False, blank=True)
     code = models.CharField(max_length=100, verbose_name="Course Code", null=False, blank=True)
     university = models.ForeignKey(University, verbose_name="University", on_delete=models.CASCADE)
     description = models.TextField(verbose_name="Course Description", null=False, blank=True)
+    category = models.CharField(max_length=500, verbose_name="Category Name", choices=CATEGORY_CHOICES, null=False,
+                                blank=False)
 
     url = models.URLField(verbose_name="Most Recent Course Website", null=True, blank=True)
     prerequisites = models.CharField(verbose_name="Course Prerequisites", max_length=500, null=True, blank=True)

@@ -43,7 +43,7 @@ urlpatterns = [
     path('course/add', CourseCreateView.as_view(), name='add_course'),
     path('course/list-view', CourseListView.as_view(), name='course_list_view'),
     path('course/<int:pk>/', CourseDetailView.as_view(), name='course_detail_view'),
-    path('cpurse/<int:pk>/update', CourseUpdateView.as_view(), name='course_update'),
+    path('course/<int:pk>/update', CourseUpdateView.as_view(), name='course_update'),
 
     path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
     path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),

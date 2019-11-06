@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -41,6 +42,14 @@ class UniversityCreateView(CreateView):
     success_url = reverse_lazy('add_university')
     fields = ['name', 'short_name']
 
+    def form_valid(self, form):
+        response = super(UniversityCreateView, self).form_valid(form)
+
+        self.object.user = self.request.user
+        self.object.save()
+
+        return response
+
 
 @method_decorator(permission_required('HCI.add_course'), name='dispatch')
 class CourseCreateView(CreateView):
@@ -49,6 +58,14 @@ class CourseCreateView(CreateView):
     success_url = reverse_lazy('add_course')
     fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
               'last_taught', 'instructor', 'learning_goals', 'equivalent']
+
+    def form_valid(self, form):
+        response = super(CourseCreateView, self).form_valid(form)
+
+        self.object.user = self.request.user
+        self.object.save()
+
+        return response
 
 
 class UserProfileView(UpdateView):
@@ -85,16 +102,48 @@ class CourseListView(ListView):
     model = Course
     template_name = 'course_list_view.html'
 
+    def get_queryset(self):
+        my_courses = self.request.GET.get('my_courses', None)
+
+        if my_courses:
+            user = self.request.user
+            if not user.is_authenticated:
+                return None
+            return Course.objects.filter(user=user).all()
+        else:
+            return Course.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseListView, self).get_context_data(**kwargs)
+        object_list = context['object_list']
+
+        for object in object_list:
+            object.editable = True if object.user == self.request.user else False
+
+        return context
+
 
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'course_detail_view.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
 
-class CourseUpdateView(UpdateView):
+        object = context['object']
+        object.editable = True if object.user == self.request.user else False
+
+        return context
+
+
+class CourseUpdateView(UserPassesTestMixin, UpdateView):
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
     model = Course
     template_name = 'course_update.html'
-    fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
+    fields = ['name', 'code', 'university', 'description', 'category', 'url', 'prerequisites', 'core_for_major',
               'last_taught', 'instructor', 'learning_goals', 'equivalent']
 
     def get_success_url(self):
