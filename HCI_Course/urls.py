@@ -22,7 +22,7 @@ from django.contrib.auth import views as auth_views
 
 from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
     get_year_hist, get_terms_freq, get_sent_freq, CourseListView, UniversityListView, UniversityDetailView, \
-    UniversityUpdateView, CourseDetailView, CourseUpdateView
+    UniversityUpdateView, CourseDetailView, CourseUpdateView, activate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +34,8 @@ urlpatterns = [
          name="password_change"),
     path('account/password-change-done/', TemplateView.as_view(template_name='password_change_done.html'),
          name="password_change_done"),
+    path('account/activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+         activate, name='activate'),
 
     path('university/add', UniversityCreateView.as_view(), name='add_university'),
     path('university/list-view', UniversityListView.as_view(), name='university_list_view'),
