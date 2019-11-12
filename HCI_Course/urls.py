@@ -20,7 +20,9 @@ from django.views.generic import TemplateView
 from HCI import views
 from django.contrib.auth import views as auth_views
 
-from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, generate_charts_view, get_year_hist, get_terms_freq, get_sent_freq, geo_data, compare_data
+from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
+    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, generate_charts_view, geo_data, compare_data, UniversityListView, UniversityDetailView, \
+    UniversityUpdateView, CourseDetailView, CourseUpdateView, activate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,8 +34,18 @@ urlpatterns = [
          name="password_change"),
     path('account/password-change-done/', TemplateView.as_view(template_name='password_change_done.html'),
          name="password_change_done"),
-    path('add/university/', UniversityCreateView.as_view(), name='add_university'),
-    path('add/course/', CourseCreateView.as_view(), name='add_course'),
+    path('account/activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+         activate, name='activate'),
+
+    path('university/add', UniversityCreateView.as_view(), name='add_university'),
+    path('university/list-view', UniversityListView.as_view(), name='university_list_view'),
+    path('university/<int:pk>/', UniversityDetailView.as_view(), name='university_detail_view'),
+    path('university/<int:pk>/update', UniversityUpdateView.as_view(), name='university_update'),
+
+    path('course/add', CourseCreateView.as_view(), name='add_course'),
+    path('course/list-view', CourseListView.as_view(), name='course_list_view'),
+    path('course/<int:pk>/', CourseDetailView.as_view(), name='course_detail_view'),
+    path('course/<int:pk>/update', CourseUpdateView.as_view(), name='course_update'),
 
     path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
     path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}Base Title{% endblock %}</title>
+    <title>{% block title %}Home Page{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
@@ -31,9 +31,8 @@
                 <a href="{% url 'signup' %}" class="list-group-item list-group-item-action bg-light">Sign Up</a>
                 <a href="{% url 'login' %}" class="list-group-item list-group-item-action bg-light">Login</a>
             {% endif %}
-            <a href="{% url 'add_university' %}" class="list-group-item list-group-item-action bg-light">Add
-                University</a>
-            <a href="{% url 'add_course' %}" class="list-group-item list-group-item-action bg-light">Add Course</a>
+            <a href="{% url 'university_list_view' %}" class="list-group-item list-group-item-action bg-light">Universities</a>
+            <a href="{% url 'course_list_view' %}" class="list-group-item list-group-item-action bg-light">Courses</a>
             <a href="{% url 'word_cloud' %}" class="list-group-item list-group-item-action bg-light">Word Clouds</a>
             <a href="{% url 'charts' %}" class="list-group-item list-group-item-action bg-light">Charts</a>
             {% if user.is_authenticated %}
@@ -47,7 +46,7 @@
     <div id="page-content-wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+            <button class="btn btn-primary" id="menu-toggle" >←</button>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,12 +100,8 @@
 
         <div class="container-fluid">
             {% block content %}
-                <h1 class="mt-4">Simple Sidebar</h1>
-                <p>The starting state of the menu will appear collapsed on smaller screens, and will appear
-                    non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is
-                    optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID
-                    which will toggle the menu when clicked.</p>
+                <h1 class="mt-4">HCI-Courses</h1>
+                <p>Please use the menu on the left</p>
             {% endblock %}
         </div>
     </div>
@@ -124,6 +119,11 @@
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+        if($("#wrapper").hasClass('toggled')) {
+            $("#menu-toggle").html("→");
+        } else{
+            $("#menu-toggle").html("←");
+        }
     });
 </script>
 

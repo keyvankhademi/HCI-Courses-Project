@@ -1,18 +1,21 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
 
+from HCI.forms import SignupForm
 from HCI.models import University, Course
-from HCI.utils.word_cloud import generate_word_cloud
 from HCI.utils import charts
+from HCI.utils.email_functions import send_email, account_activation_token
+from HCI.utils.word_cloud import generate_word_cloud
 
 
 def homepage(request):
@@ -21,16 +24,19 @@ def homepage(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('homepage')
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            send_email(request, user)
+            return render(request, 'message.html', {
+                'title': "Sign Up Successful",
+                'message': "Thank you for signing up. An activation link is sent to your email. Please Activate your "
+                           "account using that link",
+            })
     else:
-        form = UserCreationForm()
+        form = SignupForm()
     return render(request, 'signup.html', {'form': form})
 
 
@@ -41,6 +47,14 @@ class UniversityCreateView(CreateView):
     success_url = reverse_lazy('add_university')
     fields = ['name', 'short_name']
 
+    def form_valid(self, form):
+        response = super(UniversityCreateView, self).form_valid(form)
+
+        self.object.user = self.request.user
+        self.object.save()
+
+        return response
+
 
 @method_decorator(permission_required('HCI.add_course'), name='dispatch')
 class CourseCreateView(CreateView):
@@ -49,6 +63,14 @@ class CourseCreateView(CreateView):
     success_url = reverse_lazy('add_course')
     fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
               'last_taught', 'instructor', 'learning_goals', 'equivalent']
+
+    def form_valid(self, form):
+        response = super(CourseCreateView, self).form_valid(form)
+
+        self.object.user = self.request.user
+        self.object.save()
+
+        return response
 
 
 class UserProfileView(UpdateView):
@@ -84,7 +106,6 @@ def get_sent_freq(request):
     data = charts.get_sent_freq()
     return JsonResponse(data)
 
-
 def g_test(request):
     data = charts.g_test()
     return JsonResponse(data)
@@ -98,3 +119,94 @@ def geo_data(request):
 def compare_data(request):
     data = charts.compare_data()
     return JsonResponse(data)
+
+class CourseListView(ListView):
+    model = Course
+    template_name = 'course_list_view.html'
+
+    def get_queryset(self):
+        my_courses = self.request.GET.get('my_courses', None)
+
+        if my_courses:
+            user = self.request.user
+            if not user.is_authenticated:
+                return None
+            return Course.objects.filter(user=user).all()
+        else:
+            return Course.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseListView, self).get_context_data(**kwargs)
+        object_list = context['object_list']
+
+        for object in object_list:
+            object.editable = True if object.user == self.request.user else False
+
+        return context
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'course_detail_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+
+        object = context['object']
+        object.editable = True if object.user == self.request.user else False
+
+        return context
+
+
+class CourseUpdateView(UserPassesTestMixin, UpdateView):
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    model = Course
+    template_name = 'course_update.html'
+    fields = ['name', 'code', 'university', 'description', 'category', 'url', 'prerequisites', 'core_for_major',
+              'last_taught', 'instructor', 'learning_goals', 'equivalent']
+
+    def get_success_url(self):
+        return reverse('course_detail_view', None, [self.kwargs.get('pk'), ])
+
+
+class UniversityListView(ListView):
+    model = University
+    template_name = 'university_list_view.html'
+
+
+class UniversityDetailView(DetailView):
+    model = University
+    template_name = 'university_detail_view.html'
+
+
+class UniversityUpdateView(UpdateView):
+    model = University
+    template_name = 'university_update.html'
+    fields = ['name', 'short_name']
+
+    def get_success_url(self):
+        return reverse('university_detail_view', None, [self.kwargs.get('pk'), ])
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return render(request, 'message.html', {
+            'title': "Your Account is Activated",
+            'message': 'Thank you for your email confirmation. Now you can login your account.',
+        })
+    else:
+        return render(request, 'message.html', {
+            'title': "Something went wrong",
+            'message': 'Activation link is invalid!',
+        })
