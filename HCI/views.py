@@ -106,9 +106,6 @@ def get_sent_freq(request):
     data = charts.get_sent_freq()
     return JsonResponse(data)
 
-def g_test(request):
-    data = charts.g_test()
-    return JsonResponse(data)
 
 
 def geo_data(request):

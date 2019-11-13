@@ -16,7 +16,7 @@ from gensim.corpora import Dictionary
 import re
 
 from HCI.models import Course, University, Topic
-
+from django.db.models import Prefetch
 
 def generate_charts():
     x = [c.last_taught.year for c in Course.objects.all()]
@@ -90,21 +90,6 @@ def get_terms_freq():
 
     return data
 
-
-def g_test():
-    years = [course.last_taught.year for course in Course.objects.all()]
-    uni = [course.university.name for course in Course.objects.all()]
-
-    data = [['university', 'year']]
-
-    for u, y in zip(uni, years):
-        data.append([u, y])
-
-    return {'data': data}
-
-#sentences frequency
-
-
 def get_sent_freq():
 
     desc = ", ".join(topic.description for topic in Topic.objects.all())
@@ -154,26 +139,27 @@ def geo_data():
 def compare_data():
     data = {
         'all': [['Word', 'Frequency']],
-        'Canada': [['Word', 'Frequency'], ['test', 10], ['tt', 5]],
-        'USA': [['Word', 'Frequency'], ['ut', 6], ['tetest', 2]]
+        'Canada': [['Word', 'Frequency']],
+        'USA': [['Word', 'Frequency']]
     }
 
     all = ", ".join(topic.description for topic in Topic.objects.all())
     data['all'].extend(get_terms(all))
 
-    """
-    cad_u = University.object.filter(
-        country='Canada').prefetch_related('course__university').prefetch_related('topic__')
-    
+    cad_set = Topic.objects.prefetch_related(Prefetch(
+        'course__university', queryset=University.objects.filter(country='Canada'), to_attr='country'))
 
-    cad = ", ".join(topic.description for topic in Topic.objects.all().prefetch_related('course__university').fetch_related('university__country').filter(country='Canada'))
-    data['Canada'].append(get_terms(cad))
-    
-    #us = ", ".join(topic.description for topic in Topic.objects.all().prefetch_related(
-    #    'university__country').prefetch_related('university__country').filter(country='United States'))
-    #data['USA'].append(get_terms(all))
-    """
+    cad = ", ".join(
+        topic.description for topic in cad_set.filter(country='Canada'))
+    data['Canada'].extend(get_terms(cad))
 
+    us_set = Topic.objects.prefetch_related(Prefetch(
+        'course__university', queryset=University.objects.filter(country='United States'),to_attr='country'))
+
+    us = ", ".join(
+        topic.description for topic in us_set)
+    data['USA'].extend(get_terms(us))
+    
     return data
 
 
