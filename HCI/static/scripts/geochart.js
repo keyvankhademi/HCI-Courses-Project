@@ -5,10 +5,9 @@ $(document).ready(function ()
 
     $.ajax
         ({
-            url: '/charts/geodata/',
+            url: $('#geodata_link').text(),
             success: function (data)
             {
-                //geo_data = data['country density']
                 geo_data = data
             }
         });

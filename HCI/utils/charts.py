@@ -53,8 +53,6 @@ def generate_charts():
     plt.savefig("word_cloud/uni_pie.png")
 
 #frequency of syllabus years
-
-
 def get_years():
     years = [course.last_taught.year for course in Course.objects.all()]
     df = pd.Series(years).value_counts(sort=False)
@@ -67,28 +65,9 @@ def get_years():
     return data
 
 #frequency of terms
-
-
 def get_terms_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
-
-    punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ["The", "This"]
-    lem = WordNetLemmatizer()
-
-    count = Counter([lem.lemmatize(word).lower() for word in nltk.word_tokenize(desc)
-                     if word not in stop])
-    data = {
-        'title': "terms histogram",
-        'labels': [],
-        'values': []
-    }
-
-    for x, y in count.most_common():
-        data['labels'].append(x)
-        data['values'].append(y)
-
-    return data
+    return get_terms(desc)
 
 def get_sent_freq():
 
@@ -135,44 +114,29 @@ def geo_data():
 
     return data
 
+def get_terms_ca():
 
-def compare_data():
-    data = {
-        'all': [['Word', 'Frequency']],
-        'Canada': [['Word', 'Frequency']],
-        'USA': [['Word', 'Frequency']]
-    }
+    cad_set = Topic.objects.filter(course__university__country='Canada').select_related()
+    cad = ", ".join(topic.description for topic in cad_set)
+    return get_terms(cad)
 
-    all = ", ".join(topic.description for topic in Topic.objects.all())
-    data['all'].extend(get_terms(all))
-
-    cad_set = Topic.objects.prefetch_related(Prefetch(
-        'course__university', queryset=University.objects.filter(country='Canada'), to_attr='country'))
-
-    cad = ", ".join(
-        topic.description for topic in cad_set.filter(country='Canada'))
-    data['Canada'].extend(get_terms(cad))
-
-    us_set = Topic.objects.prefetch_related(Prefetch(
-        'course__university', queryset=University.objects.filter(country='United States'),to_attr='country'))
-
-    us = ", ".join(
-        topic.description for topic in us_set)
-    data['USA'].extend(get_terms(us))
-    
-    return data
-
+def get_terms_us():
+    us_set = Topic.objects.filter(course__university__country='United States').select_related()
+    us = ", ".join(topic.description for topic in us_set)
+    return get_terms(us)   
 
 def get_terms(desc):
     punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ["The", "This", '"']
+    stop = stopwords.words('english') + punctuation + ["The", "This", '"',"''"]
     lem = WordNetLemmatizer()
 
     count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc)
                      if word not in stop])
 
-    data = []
+    data = {'labels': [], 'values': []}
     for x, y in count.most_common():
-        data.append([x, y])
+        data['labels'].append(x)
+        data['values'].append(y)
 
     return data
+

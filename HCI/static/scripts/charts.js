@@ -1,31 +1,18 @@
 $(document).ready(function()
 {
-    $('#d_main').children().hide();
-    $('#d_single_graphs').show();
+    $('#main_div').children().hide();
+    $('#histograms_div').show();
 
-    $('#m_single').click(function()
+    $('#histograms_tab').click(function()
     {
-        $('#d_main').children().hide();
-        $('#d_single_graphs').show();
+        $('#main_div').children().hide();
+        $('#histograms_div').show();
     });
 
-    $('#m_comp').click(function ()
+    $('#metadata_tab').click(function ()
     {
-        $('#d_main').children().hide();
-        $('#d_compare').show();
+        $('#main_div').children().hide();
+        $('#metadata_div').show();
     });
-
-    $('#m_geo').click(function ()
-    {
-        $('#d_main').children().hide();
-        $('#d_geo_data').show();
-    });
-
-    $('#m_img').click(function ()
-    {
-        $('#d_main').children().hide();
-        $('#d_images').show();
-    });
-
 });
 
