@@ -88,9 +88,13 @@ def generate_word_cloud_view(request):
     return HttpResponse(status=200)
 
 
+def generate_charts_view(request):
+    charts.generate_charts()
+    return HttpResponse(status=200)
+
 def get_year_hist(request):
-    data = charts.get_years()
-    return JsonResponse(data)
+        data = charts.get_years()
+        return JsonResponse(data)
 
 
 def get_terms_freq(request):
@@ -102,6 +106,17 @@ def get_sent_freq(request):
     data = charts.get_sent_freq()
     return JsonResponse(data)
 
+def geo_data(request):
+    data = charts.geo_data()
+    return JsonResponse(data)
+
+def get_terms_ca(request):
+    data = charts.get_terms_ca()
+    return JsonResponse(data)
+
+def get_terms_us(request):
+    data = charts.get_terms_us()
+    return JsonResponse(data)
 
 class CourseListView(ListView):
     model = Course

@@ -21,8 +21,8 @@ from HCI import views
 from django.contrib.auth import views as auth_views
 
 from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
-    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, UniversityListView, UniversityDetailView, \
-    UniversityUpdateView, CourseDetailView, CourseUpdateView, activate
+    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, generate_charts_view, geo_data, UniversityListView, UniversityDetailView, \
+    UniversityUpdateView, CourseDetailView, CourseUpdateView, activate, get_terms_ca, get_terms_us
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,9 +51,15 @@ urlpatterns = [
     path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),
 
     path('charts/', TemplateView.as_view(template_name='charts.html'), name='charts'),
+    path('charts/generate', generate_charts_view, name='generate_charts'),
     path('charts/years/frequency/', get_year_hist, name='year_hist'),
     path('charts/terms/frequency/', get_terms_freq, name='terms_hist'),
     path('charts/sentences/frequency/', get_sent_freq, name='sent_hist'),
+
+    path('charts/geodata/', geo_data, name='geo_data'),
+    path('charts/terms/canada/', get_terms_ca, name='get_terms_ca'),
+    path('charts/terms/us/', get_terms_us, name='get_terms_us'),
+  
 
     path('', views.homepage, name='homepage'),
 ]

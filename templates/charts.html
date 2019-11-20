@@ -6,42 +6,109 @@
 
 
 {% block content %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="{% static "scripts/charts.js" %}"></script>
+<script src="{% static "scripts/singlechart.js" %}"></script>
+<script src="{% static "scripts/year_hist.js" %}"></script>
+<script src="{% static "scripts/comparechart.js" %}"></script>
+<script src="{% static "scripts/geochart.js" %}"></script>
+<link href="{% static "css/charts.css" %}" rel="stylesheet">
 
-    <h2>Charts</h2>
-    
-    <button id="b_year_hist" class="btn btn-primary">year histogram</button>
-    <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
-    <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
-    <br><br>
+<h2>Charts</h2>
 
-    <div style="display: none;" id="b_secondary">
-        <button id="b_piechart" class="btn btn-secondary">pie chart</button>
-        <button id="b_barchart" class="btn btn-secondary">bar chart</button>
+<div id="tabs_main">
+    <button id="histograms_tab" class="btn btn-primary">Histograms</button>
+    <button id="metadata_tab" class="btn btn-primary">Metadata</button>
+</div>
+<hr>
+
+<div id='main_div'>
+    <div id='histograms_div'>
+        <div>
+            <div style="text-align: center;">
+                <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
+                <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
+            </div>
+            <br>
+
+            <table width=100%>
+                <tr>
+                    <td width='80%'>
+                        <canvas id="chart-content" width="150px" height="80px"></canvas>
+                    </td>
+                    <td>
+                        <div id="b_secondary">
+                            <button id="b_barchart" class="btn btn-secondary">bar chart</button>
+                            <br>
+                            <button id="b_piechart" class="btn btn-secondary">pie chart</button>
+                        </div>
+                        <br>
+                        n: <input id="size_input" type="number" min='0'>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div>
+            <h3 style="text-align: center;">Compare Countries</h3>
+            <table width='100%'>
+                <tr>
+                    <td>
+                        <select id="country_select_1">
+                            <option value="All">All</a>
+                            <option value="Canada">Canada</a>
+                            <option value="USA">USA</a>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="country_select_2">
+                            <option value="All">All</a>
+                            <option value="Canada">Canada</a>
+                            <option value="Usa">USA</a>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" width="45%">
+                        <canvas id="cc1"></canvas>
+                    </td>
+                    <td style="text-align: center;" width="45%">
+                        <canvas id="cc2"></canvas>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
     </div>
 
-    <br>
-    Size: <input id="size_input" type="number" min='0'>
-    <br><br>
-    
-    <canvas id="chart-content" width="150px" height="80px"></canvas>
-    <br>
-    <br>
-    
-    <p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>
-    <p style="display: none;" id='years_link'>/charts/years/frequency/</p>
-    <p style="display: none;" id='sent_link'>/charts/sentences/frequency/</p>
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-    <script src="{% static "scripts/charts.js" %}"></script>
-
-
-
-    <div id="dashboard_div">
-        <div id="filter_div"></div>
-        <div id="chart_div"></div>
+    <div id='metadata_div'>
+        <p> Meta information about all Syllabuses collected. Like the year they are from and their geo location.</p>
+        <br>
+        <h3>Country Density</h3>
+        <div id="country_density"></div><br>
+        <h3>Region Density</h3>
+        <div id="region_density"></div><br>
+        <h3>Syllabuses Years</h3>
+        <table width='100%'>
+            <tr>
+                <td></td>
+                <td width = '65%'>
+                    <canvas width="150px" height="80px" id="year_syllabus"></canvas>
+                </td>
+                <td></td>
+            </tr>
+        </table>
     </div>
+</div>
+
+<p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>
+<p style="display: none;" id='years_link'>/charts/years/frequency/</p>
+<p style="display: none;" id='sent_link'>/charts/sentences/frequency/</p>
+<p style="display: none;" id='geodata_link'>/charts/geodata/</p>
+<p style="display: none;" id='us_terms_link'>/charts/terms/us/</p>
+<p style="display: none;" id='ca_terms_link'>/charts/terms/canada/</p>
+
 
 {% endblock %}

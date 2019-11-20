@@ -15,7 +15,8 @@ import gensim
 from gensim.corpora import Dictionary
 import re
 
-from HCI.models import Course, University
+from HCI.models import Course, University, Topic
+from django.db.models import Prefetch
 
 def generate_charts():
     x = [c.last_taught.year for c in Course.objects.all()]
@@ -65,33 +66,16 @@ def get_years():
 
 #frequency of terms
 def get_terms_freq():
-    desc = " ".join(course.description for course in Course.objects.all())
+    desc = ", ".join(topic.description for topic in Topic.objects.all())
+    return get_terms(desc)
 
-    punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ["The", "This"]
-    lem = WordNetLemmatizer()
-
-    count = Counter([lem.lemmatize(word).lower() for word in nltk.word_tokenize(desc)
-                     if word not in stop])
-    data = {
-        'title': "terms histogram",
-        'labels': [],
-        'values': []
-    }
-
-    for x, y in count.most_common():
-        data['labels'].append(x)
-        data['values'].append(y)
-
-    return data
-
-
-#sentences frequency
 def get_sent_freq():
-    desc = "\n".join(course.description for course in Course.objects.all())
+
+    desc = ", ".join(topic.description for topic in Topic.objects.all())
 
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     d = []
+    desc = desc.lower()
     for sentence in tokenizer.tokenize(desc):
         d.extend(sentence.split(','))
     count = Counter(d)
@@ -103,6 +87,54 @@ def get_sent_freq():
     }
 
     for x, y in count.most_common(20):
+        data['labels'].append(x)
+        data['values'].append(y)
+
+    return data
+
+
+def geo_data():
+    data = {
+        'country density': [['Country', 'Number']],
+        'university': [],
+        'region density': [['State', 'Number']]
+    }
+
+    countries = [uni.country for uni in University.objects.all()
+                 if len(uni.country) > 1]
+    states = [uni.state for uni in University.objects.all()
+              if len(uni.state) > 1]
+    count_country = Counter(countries)
+    count_state = Counter(states)
+
+    for c, a in count_country.most_common():
+        data['country density'].append([c, a])
+    for c, a in count_state.most_common():
+        data['region density'].append([c, a])
+
+    return data
+
+def get_terms_ca():
+
+    cad_set = Topic.objects.filter(course__university__country='Canada').select_related()
+    cad = ", ".join(topic.description for topic in cad_set)
+    return get_terms(cad)
+
+def get_terms_us():
+    us_set = Topic.objects.filter(course__university__country='United States').select_related()
+    us = ", ".join(topic.description for topic in us_set)
+    return get_terms(us)   
+
+def get_terms(desc):
+    punctuation = list(string.punctuation)
+    stop = stopwords.words('english') + punctuation + ["The", "This", '"',"''"]
+    lem = WordNetLemmatizer()
+
+    count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc)
+                     if word not in stop])
+
+    data = {'labels': [], 'values': []}
+    for x, y in count.most_common():
         data['labels'].append(x)
         data['values'].append(y)
 

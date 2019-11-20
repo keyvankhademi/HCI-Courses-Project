@@ -19,6 +19,9 @@ class Command(BaseCommand):
             data.append({
                 "name": uni.name,
                 "short_name": uni.short_name,
+                "country": uni.country,
+                "state": uni.state,
+                "city": uni.city
             })
         return data
 
