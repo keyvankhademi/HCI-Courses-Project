@@ -129,17 +129,31 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
+            'filters': ['require_debug_false'],
             'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
             'propagate': True,
         },
     },
