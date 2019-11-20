@@ -1,0 +1,36 @@
+button
+{
+    margin: 6px 1px 6px 1px;
+}
+
+table
+{
+    text-align: center;
+}
+
+canvas
+{
+    text-align: center;
+}
+
+input
+{
+    width: 3em;
+}
+
+#metadata_div H3
+{
+    text-align: center;
+}
+
+#metadata_div div
+{
+    display: block;
+    margin: 0 auto;
+}
+
+#year_syllabus
+{
+    width: 526px;
+    height: 256px;
+}
