@@ -22,7 +22,7 @@ account_activation_token = TokenGenerator()
 def send_email(request, user):
     current_site = get_current_site(request)
     mail_subject = 'Activate your blog account.'
-    message = render_to_string('activation_email.html', {
+    message = render_to_string('account/activation_email.html', {
         'user': user,
         'domain': current_site.domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),

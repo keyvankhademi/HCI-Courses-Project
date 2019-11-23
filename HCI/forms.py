@@ -3,15 +3,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import requests
 
+from HCI_Course.settings import SETTINGS_JSON
+
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=200, help_text='Required')
 
     def is_valid(self):
         response = self.data['g-recaptcha-response']
-        key = "6LeEo8MUAAAAANw2wGTFYVmITjKdH4Yz0Xt6keKE"
+        key = SETTINGS_JSON['reCaptcha_key']
 
-        r = requests.post("https://www.google.com/recaptcha/api/siteverify", {
+        r = requests.post(SETTINGS_JSON['reCaptcha_url'], {
             'secret': key,
             'response': response,
         })

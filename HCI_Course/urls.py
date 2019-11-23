@@ -14,52 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.views.generic import TemplateView
+from django.urls import path, include
 
-from HCI import views
-from django.contrib.auth import views as auth_views
-
-from HCI.views import signup_view, UniversityCreateView, CourseCreateView, UserProfileView, generate_word_cloud_view, \
-    get_year_hist, get_terms_freq, get_sent_freq, CourseListView, generate_charts_view, geo_data, UniversityListView, UniversityDetailView, \
-    UniversityUpdateView, CourseDetailView, CourseUpdateView, activate, get_terms_ca, get_terms_us
+from HCI.views import views
+from HCI.urls import university_url_patterns, course_url_patterns, charts_url_patterns, account_url_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/signup/', signup_view, name='signup'),
-    path('accounts/profile/', UserProfileView.as_view(), name='profile'),
-    path('accounts/change-password/', auth_views.PasswordChangeView.as_view(template_name='password_change.html'),
-         name="password_change"),
-    path('account/password-change-done/', TemplateView.as_view(template_name='password_change_done.html'),
-         name="password_change_done"),
-    path('account/activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-         activate, name='activate'),
-
-    path('university/add', UniversityCreateView.as_view(), name='add_university'),
-    path('university/list-view', UniversityListView.as_view(), name='university_list_view'),
-    path('university/<int:pk>/', UniversityDetailView.as_view(), name='university_detail_view'),
-    path('university/<int:pk>/update', UniversityUpdateView.as_view(), name='university_update'),
-
-    path('course/add', CourseCreateView.as_view(), name='add_course'),
-    path('course/list-view', CourseListView.as_view(), name='course_list_view'),
-    path('course/<int:pk>/', CourseDetailView.as_view(), name='course_detail_view'),
-    path('course/<int:pk>/update', CourseUpdateView.as_view(), name='course_update'),
-
-    path('word-cloud/', TemplateView.as_view(template_name='word_cloud.html'), name='word_cloud'),
-    path('word-cloud/generate', generate_word_cloud_view, name='generate_word_cloud'),
-
-    path('charts/', TemplateView.as_view(template_name='charts.html'), name='charts'),
-    path('charts/generate', generate_charts_view, name='generate_charts'),
-    path('charts/years/frequency/', get_year_hist, name='year_hist'),
-    path('charts/terms/frequency/', get_terms_freq, name='terms_hist'),
-    path('charts/sentences/frequency/', get_sent_freq, name='sent_hist'),
-
-    path('charts/geodata/', geo_data, name='geo_data'),
-    path('charts/terms/canada/', get_terms_ca, name='get_terms_ca'),
-    path('charts/terms/us/', get_terms_us, name='get_terms_us'),
-  
-
+    path('account/', include(account_url_patterns)),
+    path('university/', include(university_url_patterns)),
+    path('course/', include(course_url_patterns)),
+    path('charts/', include(charts_url_patterns)),
     path('', views.homepage, name='homepage'),
 ]

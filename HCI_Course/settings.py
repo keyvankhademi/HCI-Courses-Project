@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -121,6 +121,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "word_cloud")
 ]
 
+LOGIN_URL = reverse_lazy('account:login')
+LOGOUT_URL = reverse_lazy('account:logout')
 LOGIN_REDIRECT_URL = reverse_lazy('homepage')
 LOGOUT_REDIRECT_URL = reverse_lazy('homepage')
 
@@ -158,11 +160,14 @@ LOGGING = {
     },
 }
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'hciproject76@gmail.com'
-EMAIL_HOST_PASSWORD = 'longa=0;;'
-EMAIL_PORT = 587
+settings_file = open("settings.json")
+SETTINGS_JSON = json.loads(settings_file.read())
+
+EMAIL_USE_TLS = SETTINGS_JSON['EMAIL_USE_TLS']
+EMAIL_HOST = SETTINGS_JSON['EMAIL_HOST']
+EMAIL_HOST_USER = SETTINGS_JSON['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = SETTINGS_JSON['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = SETTINGS_JSON['EMAIL_PORT']
 
 import nltk
 

@@ -76,11 +76,11 @@
     <div class="col-md-6 mb-3">
         {% if course.editable %}
             <button class="btn btn-warning"
-                    onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+                    onclick="window.location.href='{% url 'course:update' course.pk %}'">edit
             </button>
         {% else %}
             <button class="btn btn-warning" disabled title="You Cannot Edit This Course"
-                    onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+                    onclick="window.location.href='{% url 'course:update' course.pk %}'">edit
             </button>
         {% endif %}
     </div>
