@@ -9,5 +9,5 @@
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary" id="menu-toggle">Update</button>
     </form>
-    <button class="btn btn-outline-warning" onclick="window.location='{% url 'password_change' %}';">Change Password</button>
+    <button class="btn btn-outline-warning" onclick="window.location='{% url 'account:password_change' %}';">Change Password</button>
 {% endblock %}

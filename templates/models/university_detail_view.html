@@ -16,7 +16,7 @@
                value="{{ university.short_name }}">
     </div>
     <div class="col-md-6 mb-3">
-        <button class="btn btn-warning" onclick="window.location.href='{% url 'university_update' university.pk %}'">edit</button>
+        <button class="btn btn-warning" onclick="window.location.href='{% url 'university:update' university.pk %}'">edit</button>
     </div>
 
 {% endblock %}

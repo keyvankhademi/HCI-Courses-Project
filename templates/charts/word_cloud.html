@@ -9,7 +9,7 @@
     <script>
         function generate() {
             const Http = new XMLHttpRequest();
-            const url = '{% url 'generate_word_cloud' %}';
+            const url = '{% url 'charts:generate_word_cloud' %}';
             Http.open("GET", url);
             Http.send();
 

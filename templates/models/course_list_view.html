@@ -6,13 +6,13 @@
     <h2>Courses</h2>
 
     <div class="mb-3">
-        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course_list_view' %}?my_courses=true'">
+        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course:list_view' %}?my_courses=true'">
             My Courses
         </button>
-        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course_list_view' %}'">All Courses
+        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course:list_view' %}'">All Courses
         </button>
 
-        <button class="btn btn-primary float-right" onclick="window.location.href = '{% url 'add_course' %}'">Add
+        <button class="btn btn-primary float-right" onclick="window.location.href = '{% url 'course:add' %}'">Add
             Course
         </button>
 
@@ -38,18 +38,18 @@
                 <td>{{ course.university.short_name }}</td>
                 <td>
                     <button class="btn btn-primary"
-                            onclick="window.location.href='{% url 'course_detail_view' course.pk %}'">details
+                            onclick="window.location.href='{% url 'course:detail_view' course.pk %}'">details
                     </button>
                 </td>
 
                 <td>
                     {% if course.editable %}
                         <button class="btn btn-warning"
-                                onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+                                onclick="window.location.href='{% url 'course:update' course.pk %}'">edit
                         </button>
                     {% else %}
                         <button class="btn btn-warning" disabled title="You Cannot Edit This Course"
-                                onclick="window.location.href='{% url 'course_update' course.pk %}'">edit
+                                onclick="window.location.href='{% url 'course:update' course.pk %}'">edit
                         </button>
                     {% endif %}
                 </td>

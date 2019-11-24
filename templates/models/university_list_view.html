@@ -5,7 +5,7 @@
 {% block content %}
     <h2>Universities</h2>
 
-    <button class="btn btn-primary" onclick="window.location.href = '{% url 'add_university' %}'">Add University</button>
+    <button class="btn btn-primary" onclick="window.location.href = '{% url 'university:add' %}'">Add University</button>
 
     <table class="table">
         <thead>
@@ -24,8 +24,8 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ uni.name }}</td>
                 <td>{{ uni.short_name }}</td>
-                <td><button class="btn btn-primary" onclick="window.location.href='{% url 'university_detail_view' uni.pk %}'">details</button></td>
-                <td><button class="btn btn-warning" onclick="window.location.href='{% url 'university_update' uni.pk %}'">edit</button></td>
+                <td><button class="btn btn-primary" onclick="window.location.href='{% url 'university:detail_view' uni.pk %}'">details</button></td>
+                <td><button class="btn btn-warning" onclick="window.location.href='{% url 'university:update' uni.pk %}'">edit</button></td>
                 <td><button class="btn btn-danger" disabled title="Temporarily Disabled">report</button></td>
             </tr>
         {% endfor %}

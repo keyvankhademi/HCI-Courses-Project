@@ -1,22 +1,14 @@
-import numpy as np
-import matplotlib.mlab as mlab
-import matplotlib.pyplot as plt
-
-import pandas as pd
+import string
 from collections import Counter
 
-import json
-import operator
+import matplotlib.pyplot as plt
 import nltk
+import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
-import string
-import gensim
-from gensim.corpora import Dictionary
-import re
 
 from HCI.models import Course, University, Topic
-from django.db.models import Prefetch
+
 
 def generate_charts():
     x = [c.last_taught.year for c in Course.objects.all()]
@@ -52,7 +44,8 @@ def generate_charts():
     plt.tight_layout()
     plt.savefig("word_cloud/uni_pie.png")
 
-#frequency of syllabus years
+
+# frequency of syllabus years
 def get_years():
     years = [course.last_taught.year for course in Course.objects.all()]
     df = pd.Series(years).value_counts(sort=False)
@@ -64,13 +57,14 @@ def get_years():
 
     return data
 
-#frequency of terms
+
+# frequency of terms
 def get_terms_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
     return get_terms(desc)
 
-def get_sent_freq():
 
+def get_sent_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
 
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -114,20 +108,22 @@ def geo_data():
 
     return data
 
-def get_terms_ca():
 
+def get_terms_ca():
     cad_set = Topic.objects.filter(course__university__country='Canada').select_related()
     cad = ", ".join(topic.description for topic in cad_set)
     return get_terms(cad)
 
+
 def get_terms_us():
     us_set = Topic.objects.filter(course__university__country='United States').select_related()
     us = ", ".join(topic.description for topic in us_set)
-    return get_terms(us)   
+    return get_terms(us)
+
 
 def get_terms(desc):
     punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ["The", "This", '"',"''"]
+    stop = stopwords.words('english') + punctuation + ["The", "This", '"', "''"]
     lem = WordNetLemmatizer()
 
     count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc)
@@ -139,4 +135,3 @@ def get_terms(desc):
         data['values'].append(y)
 
     return data
-
