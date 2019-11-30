@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -25,7 +26,7 @@ def signup_view(request):
             })
     else:
         form = SignupForm()
-    return render(request, 'account/signup.html', {'form': form})
+    return render(request, 'account/register.html', {'form': form})
 
 
 def activate(request, uidb64, token):
@@ -57,3 +58,16 @@ class UserProfileView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class PasswordChangeView2(PasswordChangeView):
+    success_url = reverse_lazy('account:password_change_done')
+    template_name = 'account/password_change.html'
+
+
+def password_change_done_view(request):
+    return render(request, 'message.html', {
+        'title': "Password Changed",
+        'message': 'Your password has been successfully changed!',
+    })
+

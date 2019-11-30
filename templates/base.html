@@ -16,6 +16,13 @@
     <!-- Custom styles for this template -->
     <link href="{% static "css/simple-sidebar.css" %}" rel="stylesheet">
 
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
 </head>
 
 <body>
@@ -33,7 +40,8 @@
             {% endif %}
             <a href="{% url 'university:list_view' %}" class="list-group-item list-group-item-action bg-light">Universities</a>
             <a href="{% url 'course:list_view' %}" class="list-group-item list-group-item-action bg-light">Courses</a>
-            <a href="{% url 'charts:word_cloud' %}" class="list-group-item list-group-item-action bg-light">Word Clouds</a>
+            <a href="{% url 'charts:word_cloud' %}" class="list-group-item list-group-item-action bg-light">Word
+                Clouds</a>
             <a href="{% url 'charts:charts' %}" class="list-group-item list-group-item-action bg-light">Charts</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'account:logout' %}" class="list-group-item list-group-item-action bg-light">Logout</a>
@@ -46,7 +54,7 @@
     <div id="page-content-wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-primary" id="menu-toggle" >←</button>
+            <button class="btn btn-primary" id="menu-toggle">←</button>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +81,8 @@
                                     class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'account:logout' %}">Logout <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'account:logout' %}">Logout <span
+                                    class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item active">
                             <p style="margin-top: 8px">Hello, {{ user.username }} </p>
@@ -110,21 +119,14 @@
 </div>
 <!-- /#wrapper -->
 
-<!-- Bootstrap core JavaScript -->
-<script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-<script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
-
-<!-- reCaptcha JavaScript -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
 <!-- Menu Toggle Script -->
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
-        if($("#wrapper").hasClass('toggled')) {
+        if ($("#wrapper").hasClass('toggled')) {
             $("#menu-toggle").html("→");
-        } else{
+        } else {
             $("#menu-toggle").html("←");
         }
     });

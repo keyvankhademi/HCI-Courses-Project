@@ -1,34 +1,160 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Sign Up{% endblock %}
+{% block scripts%}
+    <script src="{% static "sign_up/js/sign_up.js" %}"></script>
+    <link href="{% static "sign_up/css/sign_up.css" %}" rel="stylesheet">
+{% endblock %}
 {% block content %}
-    <h2>Sign up</h2>
-    <form method="post">
-        {% csrf_token %}
+{#    <h2>Sign up</h2>#}
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{##}
+{#        {% if form.errors %}#}
+{#            {% for error in form.non_field_errors %}#}
+{#                <div class="alert alert-danger">#}
+{#                    <strong>{{ error|escape }}</strong>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        {% endif %}#}
+{##}
+{#        {% for field in form %}#}
+{#            <div class="fieldWrapper">#}
+{#                {% for error in field.errors %}#}
+{#                    <div class="alert alert-danger">#}
+{#                        <strong>{{ error|escape }}</strong>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#                {{ field.label_tag }} {{ field }}#}
+{#                {% if field.help_text %}#}
+{#                    <div class="info alert-info alert">{{ field.help_text|safe }} </div>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{##}
+{#        <div class="g-recaptcha" data-sitekey="6LeEo8MUAAAAAOzXHyRF-Mq7O6MNvqUwIXsQbC_U"></div>#}
+{##}
+{#        <button type="submit" class="btn btn-primary" id="menu-toggle">Sign Up</button>#}
+{#    </form>#}
 
-        {% if form.errors %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endif %}
+    <nav class="main-nav">
+        <ul>
+            <li><a class="signin" href="#0">Sign in</a></li>
+            <li><a class="signup" href="#0">Sign up</a></li>
+        </ul>
+    </nav>
 
-        {% for field in form %}
-            <div class="fieldWrapper">
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-                {{ field.label_tag }} {{ field }}
-                {% if field.help_text %}
-                    <div class="info alert-info alert">{{ field.help_text|safe }} </div>
-                {% endif %}
+    <div class="user-modal">
+        <div class="user-modal-container">
+            <ul class="switcher">
+                <li><a href="#0">Sign in</a></li>
+                <li><a href="#0">New account</a></li>
+            </ul>
+
+            <div id="login">
+                <form class="form">
+                    <p class="fieldset">
+                        <label class="image-replace email" for="signin-email">E-mail</label>
+                        <input class="full-width has-padding has-border" id="signin-email" type="email"
+                               placeholder="E-mail">
+                        <span class="error-message">An account with this email address does not exist!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <label class="image-replace password" for="signin-password">Password</label>
+                        <input class="full-width has-padding has-border" id="signin-password" type="password"
+                               placeholder="Password">
+                        <a href="#0" class="hide-password">Show</a>
+                        <span class="error-message">Wrong password! Try again.</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <input type="checkbox" id="remember-me" checked>
+                        <label for="remember-me">Remember me</label>
+                    </p>
+
+                    <p class="fieldset">
+                        <input class="full-width" type="submit" value="Login">
+                    </p>
+                </form>
+
+                <p class="form-bottom-message"><a href="#0">Forgot your password?</a></p>
+                <!-- <a href="#0" class="close-form">Close</a> -->
             </div>
-        {% endfor %}
 
-        <div class="g-recaptcha" data-sitekey="6LeEo8MUAAAAAOzXHyRF-Mq7O6MNvqUwIXsQbC_U"></div>
+            <div id="signup">
+                <form class="form">
+                    <p class="fieldset">
+                        <label class="image-replace username" for="signup-username">Username</label>
+                        <input class="full-width has-padding has-border" id="signup-username" type="text"
+                               placeholder="Username">
+                        <span class="error-message">Your username can only contain numeric and alphabetic symbols!</span>
+                    </p>
 
-        <button type="submit" class="btn btn-primary" id="menu-toggle">Sign Up</button>
-    </form>
+                    <p class="fieldset">
+                        <label class="image-replace email" for="signup-email">E-mail</label>
+                        <input class="full-width has-padding has-border" id="signup-email" type="email"
+                               placeholder="E-mail">
+                        <span class="error-message">Enter a valid email address!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <label class="image-replace password" for="signup-password">Password</label>
+                        <input class="full-width has-padding has-border" id="signup-password" type="password"
+                               placeholder="Password">
+                        <a href="#0" class="hide-password">Show</a>
+                        <span class="error-message">Your password has to be at least 6 characters long!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <label class="image-replace password" for="signup-password">Password</label>
+                        <input class="full-width has-padding has-border" id="signup-password" type="password"
+                               placeholder="Password">
+                        <a href="#0" class="hide-password">Show</a>
+                        <span class="error-message">Your password has to be at least 6 characters long!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <label class="image-replace password" for="signup-password">Password</label>
+                        <input class="full-width has-padding has-border" id="signup-password" type="password"
+                               placeholder="Password">
+                        <a href="#0" class="hide-password">Show</a>
+                        <span class="error-message">Your password has to be at least 6 characters long!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <input type="checkbox" id="accept-terms">
+                        <label for="accept-terms">I agree to the <a class="accept-terms" href="#0">Terms</a></label>
+                    </p>
+
+                    <p class="fieldset">
+                        <input class="full-width has-padding" type="submit" value="Create account">
+                    </p>
+                </form>
+
+                <!-- <a href="#0" class="cd-close-form">Close</a> -->
+            </div>
+
+            <div id="reset-password">
+                <p class="form-message">Lost your password? Please enter your email address.</br> You will receive a
+                    link to create a new password.</p>
+
+                <form class="form">
+                    <p class="fieldset">
+                        <label class="image-replace email" for="reset-email">E-mail</label>
+                        <input class="full-width has-padding has-border" id="reset-email" type="email"
+                               placeholder="E-mail">
+                        <span class="error-message">An account with this email does not exist!</span>
+                    </p>
+
+                    <p class="fieldset">
+                        <input class="full-width has-padding" type="submit" value="Reset password">
+                    </p>
+                </form>
+
+                <p class="form-bottom-message"><a href="#0">Back to log-in</a></p>
+            </div>
+            <a href="#0" class="close-form">Close</a>
+        </div>
+    </div>
 {% endblock %}

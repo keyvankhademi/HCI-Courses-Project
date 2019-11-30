@@ -11,10 +11,8 @@ account_url_patterns = ([
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('signup/', signup_view, name='signup'),
     path('profile/', UserProfileView.as_view(), name='profile'),
-    path('change-password/', auth_views.PasswordChangeView.as_view(template_name='account/password_change.html'),
-         name="password_change"),
-    path('password-change-done/', TemplateView.as_view(template_name='account/password_change_done.html'),
-         name="password_change_done"),
+    path('change-password/', PasswordChangeView2.as_view(), name="password_change"),
+    path('password-change-done/', password_change_done_view, name="password_change_done"),
     re_path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
          activate, name='activate'),
 ], 'account')
