@@ -21,9 +21,9 @@ from HCI.urls import university_url_patterns, course_url_patterns, charts_url_pa
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include(account_url_patterns)),
-    path('university/', include(university_url_patterns)),
-    path('course/', include(course_url_patterns)),
-    path('charts/', include(charts_url_patterns)),
+    path('account/', include((account_url_patterns, 'HCI'), namespace='account')),
+    path('university/', include((university_url_patterns, 'HCI'), namespace='university')),
+    path('course/', include((course_url_patterns, 'HCI'), namespace='course')),
+    path('charts/', include((charts_url_patterns, 'HCI'), namespace='charts')),
     path('', views.homepage, name='homepage'),
 ]
