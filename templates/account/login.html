@@ -39,7 +39,7 @@
                 </div>
             {% endfor %}
             <label for="password">Password
-                <a href="forgot.html" class="float-right">
+                <a href="{% url 'account:password_forgot' %}" class="float-right">
                     Forgot Password?
                 </a>
             </label>
