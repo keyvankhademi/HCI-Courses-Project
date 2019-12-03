@@ -25,5 +25,7 @@ urlpatterns = [
     path('university/', include((university_url_patterns, 'HCI'), namespace='university')),
     path('course/', include((course_url_patterns, 'HCI'), namespace='course')),
     path('charts/', include((charts_url_patterns, 'HCI'), namespace='charts')),
+    path('report/', include(('report.urls', 'report'))),
+    path('message/', include(('message.urls', 'message'))),
     path('', views.homepage, name='homepage'),
 ]

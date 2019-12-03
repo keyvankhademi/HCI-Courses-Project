@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+    <h2>Your Messages</h2>
+
+    <div class="mb-3">
+        <button class="btn btn-primary">
+            Unread Messages
+        </button>
+        <button class="btn btn-primary">
+            All Messages
+        </button>
+
+        <button class="btn btn-primary float-right">
+            Send a Message
+        </button>
+
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Sender</th>
+            <th scope="col">Message</th>
+            <th scope="col">Read</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for message in object_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ message.sender }}</td>
+                <td>{{ message.message }}</td>
+                <td>
+                    <button class="btn btn-primary">
+                        read
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger">
+                        delete
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
