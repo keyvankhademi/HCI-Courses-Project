@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+    <style>
+        body {
+            background: url('{% static 'background.jpg' %}') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1 align="center" style="color: white">
+        What We Teach
+    </h1>
+{% endblock %}
