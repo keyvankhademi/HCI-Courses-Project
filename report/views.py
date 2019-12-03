@@ -20,7 +20,7 @@ class CourseReportCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.is_authenticated
 
     model = CourseReport
-    template_name = 'course_report.html'
+    template_name = 'report/course_report.html'
     fields = ('course', 'reason', 'message')
     success_url = reverse_lazy('report:success')
 
@@ -39,6 +39,6 @@ class UniversityReportCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.is_authenticated
 
     model = UniversityReport
-    template_name = 'university_report.html'
+    template_name = 'report/university_report.html'
     fields = ('university', 'reason', 'message')
     success_url = reverse_lazy('report:success')

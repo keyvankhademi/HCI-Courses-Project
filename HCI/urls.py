@@ -1,26 +1,8 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path, re_path
+from django.urls import path
 from django.views.generic import TemplateView
 
-from HCI.views.account_views import *
 from HCI.views.chart_views import *
 from HCI.views.model_views import *
-
-account_url_patterns = [
-    path('login/', auth_views.LoginView.as_view(template_name='account/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('signup/', signup_view, name='signup'),
-    path('profile/', UserProfileView.as_view(), name='profile'),
-
-    path('change-password/', PasswordChangeView2.as_view(), name="password_change"),
-    path('password-change-done/', password_change_done_view, name="password_change_done"),
-    re_path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-         activate, name='activate'),
-
-    path('forgot-password/', forgot_password_view, name="password_forgot"),
-    re_path('reset-password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-            password_reset_view, name='password_reset'),
-]
 
 university_url_patterns = [
     path('add', UniversityCreateView.as_view(), name='add'),

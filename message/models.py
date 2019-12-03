@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -6,9 +6,9 @@ from django.db import models
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, verbose_name="Sender User", on_delete=models.SET_NULL, null=True, db_index=True,
+    sender = models.ForeignKey(get_user_model(), verbose_name="Sender User", on_delete=models.SET_NULL, null=True, db_index=True,
                                related_name='send_messages')
-    receiver = models.ForeignKey(User, verbose_name="Receiver User", on_delete=models.CASCADE, null=False,
+    receiver = models.ForeignKey(get_user_model(), verbose_name="Receiver User", on_delete=models.CASCADE, null=False,
                                  db_index=True, related_name='received_messages')
 
     message = models.TextField(verbose_name="The message text")

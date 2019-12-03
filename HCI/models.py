@@ -1,11 +1,11 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 import string
 import random
 
 
 # Create your models here.
-
 
 def generate_slug():
     choices = string.ascii_letters + string.digits
@@ -19,7 +19,7 @@ CATEGORY_CHOICES = {
 
 
 class University(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, verbose_name="University Name", unique=True, null=False, blank=False)
     short_name = models.CharField(max_length=100, verbose_name="University Short Name", null=False, blank=False)
     country = models.CharField(
@@ -29,7 +29,6 @@ class University(models.Model):
     city = models.CharField(
         max_length=100, verbose_name="University City", null=False, blank=True)
 
-
     def __str__(self):
         return str(self.name)
 
@@ -37,7 +36,7 @@ class University(models.Model):
 class Course(models.Model):
     slug = models.CharField(max_length=10, default=generate_slug, verbose_name="Slug", null=False, blank=False,
                             editable=False, unique=True)
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
 
     name = models.CharField(max_length=500, verbose_name="Course Name", null=False, blank=True)
     code = models.CharField(max_length=100, verbose_name="Course Code", null=False, blank=True)

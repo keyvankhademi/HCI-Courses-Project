@@ -1,8 +1,7 @@
 import requests
 from django import forms
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 from HCI_Course.settings import SETTINGS_JSON
@@ -53,5 +52,5 @@ class SignupForm(UserCreationForm):
         return super(SignupForm, self).is_valid()
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('username', 'email', 'password1', 'password2')
