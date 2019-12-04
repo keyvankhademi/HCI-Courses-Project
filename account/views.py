@@ -3,7 +3,6 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render
-
 # Create your views here.
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -11,8 +10,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.views.generic import UpdateView
 
 from HCI.forms import SignupForm
-from HCI.utils.email_functions import send_activation_email, account_activation_token_generator, \
-    send_password_reset_email
+from HCI.utils.email_functions import send_activation_email, account_activation_token_generator
+from HCI_Course import settings
 
 
 def signup_view(request):
@@ -77,10 +76,10 @@ def forgot_password_view(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
-            users = form.get_users(email)
-            for user in users:
-                send_password_reset_email(request, user)
+            form.save(subject_template_name='account/password_reset_email_subject.txt',
+                      email_template_name='account/password_reset_email.html',
+                      from_email=settings.EMAIL_PASSWORD_RESET,
+                      request=request)
             return render(request, 'account/message.html', {
                 'title': "Password Reset Email Sent",
                 'message': 'Your password reset request has been sent to your email, '
@@ -116,6 +115,9 @@ def password_reset_view(request, uidb64, token):
         form = SetPasswordForm(user, request.POST)
         if form.is_valid():
             form.save()
+            if not user.is_active:
+                user.is_active = True
+                user.save()
             return render(request, 'account/message.html', {
                 'title': "Your Password Has Been Reset",
                 'message': 'Your password has been reset successfully, please login with your new password',

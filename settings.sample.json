@@ -1,10 +1,11 @@
- {
+{
   "EMAIL_USE_TLS": true,
   "EMAIL_HOST": "smtp.gmail.com",
   "EMAIL_HOST_USER": "hciproject76@gmail.com",
   "EMAIL_HOST_PASSWORD": "",
+  "EMAIL_ACTIVATION": "activate@whatweteach.herokuapp.com",
+  "EMAIL_PASSWORD_RESET": "reset@whatweteach.herokuapp.com",
   "EMAIL_PORT": 587,
-
   "reCaptcha_key": "",
   "reCaptcha_url": "https://www.google.com/recaptcha/api/siteverify"
 }
