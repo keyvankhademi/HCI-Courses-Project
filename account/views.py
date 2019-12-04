@@ -12,6 +12,7 @@ from django.views.generic import UpdateView
 from HCI.forms import SignupForm
 from HCI.utils.email_functions import send_activation_email, account_activation_token_generator
 from HCI_Course import settings
+from message.utils import send_message
 
 
 def signup_view(request):
@@ -42,6 +43,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
+        send_message(None, user, "Welcome to WhatWeTeach")
         return render(request, 'account/activation_confirm.html')
     else:
         return render(request, 'account/message.html', {

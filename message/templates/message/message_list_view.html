@@ -18,7 +18,7 @@
         </button>
 
     </div>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -30,18 +30,25 @@
         </thead>
         <tbody>
         {% for message in object_list %}
-            <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ message.sender }}</td>
-                <td>{{ message.message }}</td>
-                <td>
-                    <button class="btn btn-primary">
+            <tr class="col">
+                <th scope="row" style="width: 3%">{{ forloop.counter }}</th>
+                <td style="width: 10%">{{ message.sender }}</td>
+                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 70%; max-width: 10px">{{ message.message }}</td>
+                <td style="width: 10%">
+                    <button class="btn btn-primary"
+                            onclick="window.location.href='{% url 'message:detail' %}?message={{ message.id }}'">
                         read
                     </button>
                 </td>
-                <td>
-                    <button class="btn btn-danger">
-                        delete
+                <td style="width: 10%">
+                    <script>
+                        function del{{ forloop.counter0 }}() {
+                            $.get('{% url 'message:delete' %}', {message:{{message.pk}}}, function(){
+                               location.reload();
+                            });
+                        }
+                    </script>
+                    <button class="btn btn-danger" onclick="window.del{{ forloop.counter0 }}()">delete
                     </button>
                 </td>
             </tr>

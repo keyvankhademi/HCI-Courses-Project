@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for message in object_list %}
+        {% include 'message/message_snippet.html' with message=message %}
+        {% if forloop.revcounter0 %}
+            <h5 class="col mt-3">Replied to:</h5>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

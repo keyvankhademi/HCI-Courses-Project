@@ -43,7 +43,7 @@ class CourseReportCreateView(UserPassesTestMixin, CreateView):
 
         if self.request.user.is_authenticated and course_report.course.user is not None:
             send_message(self.request.user, course_report.course.user,
-                         "One of your Courses has been report\nCourse: {}".format(course_report.course))
+                         "One of your Courses has been reported\nCourse: {}".format(course_report.course))
         return result
 
 

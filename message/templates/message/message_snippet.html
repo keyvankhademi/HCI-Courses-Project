@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card mt-3 tab-card">
+                <div class="card-header tab-card-header">
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+                            <h5>From: {{ message.sender }}</h5>
+                            <h5 class="card-title">Subject</h5>
+                            <p class="card-text">
+                                {{ message.message }}
+                            </p>
+                            <a href="#" class="btn btn-primary">Reply</a>
+                            <a href="{% url 'message:delete' %}?message={{ message.pk }}" class="btn btn-danger">Delete</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
