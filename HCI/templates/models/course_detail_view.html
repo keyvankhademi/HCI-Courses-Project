@@ -84,6 +84,12 @@
             </button>
         {% endif %}
     </div>
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-danger"
+                onclick="window.location.href='{% url 'report:course'%}?course={{ course.pk }}'">report
+        </button>
+
+    </div>
 
 
 

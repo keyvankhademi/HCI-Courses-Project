@@ -18,5 +18,8 @@
     <div class="col-md-6 mb-3">
         <button class="btn btn-warning" onclick="window.location.href='{% url 'university:update' university.pk %}'">edit</button>
     </div>
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-danger" onclick="window.location.href='{% url 'report:university'%}?university={{ university.pk }}'">report</button>
+    </div>
 
 {% endblock %}

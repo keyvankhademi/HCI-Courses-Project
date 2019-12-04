@@ -55,7 +55,7 @@
                 </td>
 
                 <td>
-                    <button class="btn btn-danger" disabled title="Temporarily Disabled">report</button>
+                    <button class="btn btn-danger" onclick="window.location.href='{% url 'report:course'%}?course={{ course.pk }}'">report</button>
                 </td>
             </tr>
         {% endfor %}
