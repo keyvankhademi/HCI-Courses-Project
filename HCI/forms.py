@@ -4,7 +4,7 @@ from django.contrib.auth import password_validation, get_user_model
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.utils.translation import gettext_lazy as _
 
-from HCI_Course.settings import SETTINGS_JSON
+from HCI_Course.settings import RECAPTCHA_KEY, RECAPTCHA_URL
 
 
 class SignupForm(UserCreationForm):
@@ -36,10 +36,9 @@ class SignupForm(UserCreationForm):
 
     def is_valid(self):
         response = self.data['g-recaptcha-response']
-        key = SETTINGS_JSON['reCaptcha_key']
 
-        r = requests.post(SETTINGS_JSON['reCaptcha_url'], {
-            'secret': key,
+        r = requests.post(RECAPTCHA_URL, {
+            'secret': RECAPTCHA_KEY,
             'response': response,
         })
 
