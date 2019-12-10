@@ -1,9 +1,11 @@
+from dal import autocomplete
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
+from HCI.forms import CourseCreateForm
 from HCI.models import University, Course
 
 
@@ -28,8 +30,7 @@ class CourseCreateView(CreateView):
     model = Course
     template_name = 'models/course_create.html'
     success_url = reverse_lazy('course:add')
-    fields = ['name', 'code', 'university', 'description', 'url', 'prerequisites', 'core_for_major',
-              'last_taught', 'instructor', 'learning_goals', 'equivalent']
+    form_class = CourseCreateForm
 
     def form_valid(self, form):
         response = super(CourseCreateView, self).form_valid(form)
@@ -109,3 +110,11 @@ class UniversityUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('university:detail_view', None, [self.kwargs.get('pk'), ])
+
+
+class UniversityAutoComplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = University.objects.all()
+        if self.q:
+            qs = qs.filter(name__contains=self.q)
+        return qs

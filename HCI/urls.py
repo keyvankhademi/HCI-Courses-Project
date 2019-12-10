@@ -9,6 +9,7 @@ university_url_patterns = [
     path('list-view', UniversityListView.as_view(), name='list_view'),
     path('<int:pk>/', UniversityDetailView.as_view(), name='detail_view'),
     path('<int:pk>/update', UniversityUpdateView.as_view(), name='update'),
+    path('auto-complete', UniversityAutoComplete.as_view(), name='auto_complete')
 ]
 
 course_url_patterns = [

@@ -2,6 +2,10 @@
 
 {% block title %}Add Course{% endblock %}
 
+{% block script %}
+    {{ form.media }}
+{% endblock %}
+
 {% block content %}
     <h2>Create Course</h2>
     <form method="post">
