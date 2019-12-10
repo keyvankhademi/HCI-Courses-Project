@@ -29,22 +29,12 @@
 <body>
 
 {% include 'navbar.html' %}
-<div class="page-wrapper chiller-theme toggled" style="padding-top: 30px;">
-    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#" style="padding-top: 50px">
-        <i class="fas fa-bars"></i>
-    </a>
-    {% include 'sidebar.html' %}
-
-    <main class="page-content">
-        <div class="container-fluid">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </main>
-    <!-- page-content" -->
-</div>
-<!-- page-wrapper -->
-
+<main class="page-content" style="padding-top: 60px">
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+</main>
 </body>
 
 </html>
