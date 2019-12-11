@@ -6,26 +6,22 @@ import random
 
 
 # Create your models here.
+from HCI.choices import CATEGORY_CHOICES, COUNTRY_CHOICES, get_all_states
+
 
 def generate_slug():
     choices = string.ascii_letters + string.digits
     return ''.join(random.choice(choices) for i in range(10))
 
 
-CATEGORY_CHOICES = {
-    ('Human-Computer Interaction', 'Human-Computer Interaction'),
-    ('Computational Mathematics', 'Computational Mathematics'),
-}
-
-
 class University(models.Model):
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, verbose_name="University Name", unique=True, null=False, blank=False)
     short_name = models.CharField(max_length=100, verbose_name="University Short Name", null=False, blank=False)
     country = models.CharField(
-        max_length=100, verbose_name="University Country", null=False, blank=True)
+        max_length=100, verbose_name="University Country", choices=COUNTRY_CHOICES, null=False, blank=True)
     state = models.CharField(
-        max_length=100, verbose_name="University State", null=False, blank=True)
+        max_length=100, verbose_name="University State", choices=get_all_states(), null=False, blank=True)
     city = models.CharField(
         max_length=100, verbose_name="University City", null=False, blank=True)
 
@@ -36,7 +32,7 @@ class University(models.Model):
 class Course(models.Model):
     slug = models.CharField(max_length=10, default=generate_slug, verbose_name="Slug", null=False, blank=False,
                             editable=False, unique=True)
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.SET_NULL)
 
     name = models.CharField(max_length=500, verbose_name="Course Name", null=False, blank=True)
     code = models.CharField(max_length=100, verbose_name="Course Code", null=False, blank=True)
@@ -76,8 +72,8 @@ class Criteria(models.Model):
 
 
 class Topic(models.Model):
-    week = models.IntegerField(verbose_name="Number of the Week in Which This Topic Is Taught", null=False)
-    description = models.CharField(max_length=800, verbose_name="Topic Description")
+    week = models.IntegerField(verbose_name="Number of the Week in Which This Topic Is Taught", null=False, blank=True)
+    description = models.CharField(max_length=800, verbose_name="Topic Description", blank=True)
     course = models.ForeignKey(Course, verbose_name="Course", on_delete=models.CASCADE)
 
     def __str__(self):

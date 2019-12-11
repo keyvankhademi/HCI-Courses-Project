@@ -2,6 +2,10 @@
 
 {% block title %}Add University{% endblock %}
 
+{% block script %}
+    {{ form.media }}
+{% endblock %}
+
 {% block content %}
     <h2>Create University</h2>
     <form method="post">

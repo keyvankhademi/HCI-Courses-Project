@@ -10,7 +10,31 @@
     <h2>Create Course</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        {% if form.errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {% for field in form.visible_fields %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% autoescape off %}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                {% endautoescape %}
+            </div>
+        {% endfor %}
+
         <button type="submit" class="btn btn-primary" id="menu-toggle">Create</button>
     </form>
 {% endblock %}
