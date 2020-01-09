@@ -10,7 +10,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views.generic import UpdateView
 
 from account.forms import SignupForm
-from HCI.utils.email_functions import send_activation_email, account_activation_token_generator
+from account.utils.email_functions import send_activation_email, account_activation_token_generator
 from HCI_Course import settings
 from message.utils import send_message
 
