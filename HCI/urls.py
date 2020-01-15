@@ -29,7 +29,7 @@ charts_url_patterns = [
     path('generate', generate_charts_view, name='generate_charts'),
     path('years/frequency/', get_year_hist, name='year_hist'),
     path('terms/frequency/', get_terms_freq, name='terms_hist'),
-    path('/sentences/frequency/', get_sent_freq, name='sent_hist'),
+    path('sentences/frequency/', get_sent_freq, name='sent_hist'),
 
     path('geodata/', geo_data, name='geo_data'),
     path('terms/canada/', get_terms_ca, name='get_terms_ca'),

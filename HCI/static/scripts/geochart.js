@@ -1,4 +1,4 @@
-$(document).ready(function ()
+function geo_chart()
 {
 
     var geo_data = []
@@ -54,7 +54,6 @@ $(document).ready(function ()
             {
                 minValue: 1
             }
-
         };
 
         var chart = new google.visualization.GeoChart(document.getElementById('country_density'));
@@ -62,4 +61,4 @@ $(document).ready(function ()
         chart.draw(data, options);
     }
 
-});
+};

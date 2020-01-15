@@ -6,7 +6,7 @@ import nltk
 import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
-
+import re
 from HCI.models import Course, University, Topic
 
 
@@ -61,17 +61,22 @@ def get_years():
 # frequency of terms
 def get_terms_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
+    desc += ", ".join(course.learning_goals for course in Course.objects.all())
     return get_terms(desc)
 
 
 def get_sent_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
+    desc += ", ".join(course.learning_goals for course in Course.objects.all())
 
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     d = []
     desc = desc.lower()
+
     for sentence in tokenizer.tokenize(desc):
-        d.extend(sentence.split(','))
+       for line in filter(None, re.split("[,.\n\r!?:\)(\"]+", sentence)):
+            if(len(line) > 2):
+                d.append(line.strip())
     count = Counter(d)
 
     data = {
@@ -80,9 +85,9 @@ def get_sent_freq():
         'values': []
     }
 
-    for x, y in count.most_common(20):
-        data['labels'].append(x)
-        data['values'].append(y)
+    for x, y in count.most_common(200):
+       data['labels'].append(x)
+       data['values'].append(y)
 
     return data
 
@@ -94,14 +99,21 @@ def geo_data():
         'region density': [['State', 'Number']]
     }
 
-    countries = [uni.country for uni in University.objects.all()
-                 if len(uni.country) > 1]
+    countries = []
+    for uni in University.objects.all():
+        if len(uni.country) > 1:
+            if uni.country == 'United States of America' or uni.country == "USA":
+                countries.append('United States')
+            else:
+                countries.append(uni.country)
     states = [uni.state for uni in University.objects.all()
               if len(uni.state) > 1]
     count_country = Counter(countries)
     count_state = Counter(states)
 
     for c, a in count_country.most_common():
+        if c == 'United States of America' or c== "USA":
+            c = 'United States'
         data['country density'].append([c, a])
     for c, a in count_state.most_common():
         data['region density'].append([c, a])
@@ -110,20 +122,23 @@ def geo_data():
 
 
 def get_terms_ca():
-    cad_set = Topic.objects.filter(course__university__country='Canada').select_related()
+    cad_set = Topic.objects.filter(
+        course__university__country='Canada').select_related()
     cad = ", ".join(topic.description for topic in cad_set)
     return get_terms(cad)
 
 
 def get_terms_us():
-    us_set = Topic.objects.filter(course__university__country='United States').select_related()
+    us_set = Topic.objects.filter(
+        course__university__country='United States').select_related()
     us = ", ".join(topic.description for topic in us_set)
     return get_terms(us)
 
 
 def get_terms(desc):
     punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + ["The", "This", '"', "''"]
+    stop = stopwords.words('english') + punctuation + \
+        ["The", "This", '"', "''", "'s"]
     lem = WordNetLemmatizer()
 
     count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc)

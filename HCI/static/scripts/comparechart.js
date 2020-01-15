@@ -1,12 +1,14 @@
-$(document).ready(function()
+function compare_chart()
 {
-    colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", '#d14641', '#d47b44', '#d6a646', '#d9d24a', '#4cdbb5']
+    colours = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", '#d14641', '#d47b44', '#d6a646', '#d9d24a', '#4cdbb5']
     d_all = {labels: [], values: []}
     d_cad = {labels: [], values: []}
     d_us = {labels: [], values: []}
 
     chart_l = null;
     chart_r = null;
+
+    max_x_value = 140;
 
     function create_chart(data, id, size = 10)
     {
@@ -20,18 +22,28 @@ $(document).ready(function()
                     datasets: [
                         {
                             label: 'amount',
-                            backgroundColor: colors,
+                            backgroundColor: colours,
                             data: data.values.slice(0,size)
                         }
                     ]
                 },
                 options:
                 {
-                    legend: { display: false }
+                    responsive: true,
+                    legend: { display: false },
+                    scales: {
+                        xAxes: [{
+                            ticks:
+                            {
+                                suggestedMin: 0,
+                                suggestedMax: max_x_value
+                            }
+                        }]
+                    }
                 }
             });
     }
-    
+
     function get_selected(value)
     {
         switch (String(value).trim())
@@ -55,6 +67,7 @@ $(document).ready(function()
                 {
                     d_all.labels = data.labels;
                     d_all.values = data.values;
+                    max_x_value = data.values[0];
                 }
         });
     }
@@ -114,6 +127,6 @@ $(document).ready(function()
         d_selected = get_selected(selected);
         chart_r = create_chart(d_selected, "cc2");
     });
- 
 
-});
+
+};
