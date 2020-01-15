@@ -12,7 +12,6 @@ function get_colors(n)
     {
         colors.push('rgba(' + random_number() + ' ,' + random_number() + ' ,' + random_number() + ',1)');
     }
-    console.log(colors)
     return colors;
 }
 
