@@ -9,18 +9,18 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<script src="{% static "scripts/charts.js" %}"></script>
 <script src="{% static "scripts/singlechart.js" %}"></script>
 <script src="{% static "scripts/year_hist.js" %}"></script>
 <script src="{% static "scripts/comparechart.js" %}"></script>
 <script src="{% static "scripts/geochart.js" %}"></script>
+<script src="{% static "scripts/charts.js" %}"></script>
 <link href="{% static "css/charts.css" %}" rel="stylesheet">
 
 <h2>Charts</h2>
 
 <div id="tabs_main">
-    <button id="histograms_tab" class="btn btn-primary">Histograms</button>
-    <button id="metadata_tab" class="btn btn-primary">Metadata</button>
+    <button id="histograms_tab" class="btn btn-primary">Sylabi Information</button>
+    <button id="metadata_tab" class="btn btn-primary">About the Sylabi Collected</button>
 </div>
 <hr>
 
@@ -28,8 +28,8 @@
     <div id='histograms_div'>
         <div>
             <div style="text-align: center;">
-                <button id="b_terms_hist" class="btn btn-primary">term histogram</button>
-                <button id="b_sent_hist" class="btn btn-primary">sentence histogram</button>
+                <button id="b_terms_hist" class="btn btn-primary">Words Frequency</button>
+                <button id="b_sent_hist" class="btn btn-primary">Topics Frequency</button>
             </div>
             <br>
 
@@ -45,7 +45,7 @@
                             <button id="b_piechart" class="btn btn-secondary">pie chart</button>
                         </div>
                         <br>
-                        n: <input id="size_input" type="number" min='0'>
+                        Show the top: <input id="size_input" type="number" min='0'>
                     </td>
                 </tr>
             </table>
@@ -53,6 +53,7 @@
         <br>
         <div>
             <h3 style="text-align: center;">Compare Countries</h3>
+            <p>Compares the Topic distribution from 2 different countries</p>
             <table width='100%'>
                 <tr>
                     <td>
@@ -75,32 +76,62 @@
                         <canvas id="cc1"></canvas>
                     </td>
                     <td style="text-align: center;" width="45%">
-                        <canvas id="cc2"></canvas>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    </div>
-
-    <div id='metadata_div'>
-        <p> Meta information about all Syllabuses collected. Like the year they are from and their geo location.</p>
-        <br>
-        <h3>Country Density</h3>
-        <div id="country_density"></div><br>
-        <h3>Region Density</h3>
-        <div id="region_density"></div><br>
-        <h3>Syllabuses Years</h3>
-        <table width='100%'>
-            <tr>
-                <td></td>
-                <td width = '65%'>
-                    <canvas width="150px" height="80px" id="year_syllabus"></canvas>
-                </td>
-                <td></td>
-            </tr>
+        </div><canvas id="cc2"></canvas>
+        </td>
+        </tr>
         </table>
+        <br><br>
     </div>
+</div>
+
+<div id='metadata_div'>
+
+    <br>
+
+    <table width='100%'>
+        <tr>
+            <td width='22.5%'></td>
+            <td width='50%'>
+                <h3>Country Density</h3>
+                <div id="country_density"></div><br><br>
+            </td>
+            <td>
+                <div id="chart-description">
+                    <p>
+                        This map shows a heat map based on the number of sylabi collected from a country.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width='22.5%'></td>
+            <td width='50%'>
+                <h3>Region Density</h3>
+                <div id="region_density"></div><br><br>
+            </td>
+            <td>
+                <div id="chart-description">
+                    <p>
+                        It shows the State and quantity of sylabi collected from Universities of that State
+                    </p>
+                </div>
+            </td>
+        <tr>
+            <td width='22.5%'></td>
+            <td width='50%'>
+                <h3>Syllabi Collected Years Distribution</h3>
+                <canvas width="150px" height="80px" id="year_syllabus"></canvas><br><br>
+            </td>
+            <td>
+                <div id="chart-description">
+                    <p>
+                        This chart shows from the distribution of the years from the sylabi we have collected
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 </div>
 
 <p style="display: none;" id='terms_link'>/charts/terms/frequency/</p>

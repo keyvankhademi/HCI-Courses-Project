@@ -29,8 +29,31 @@ input
     margin: 0 auto;
 }
 
+#metadata_div p
+{
+    font-size: 20px;;
+}
+
 #year_syllabus
 {
     width: 526px;
     height: 256px;
 }
+
+#chart-description
+{
+    margin: 5px 5px 5px 5px;
+    padding: 15px 15px 15px 15px;
+    position: relative;
+    background-color: rgb(221, 221, 221);
+    border-radius: 15px;
+}
+
+#chart-description p
+{
+    margin: 0px 0px 0px 0px;
+    font-size: 20px;
+}
+
+p
+{text-align: center;}

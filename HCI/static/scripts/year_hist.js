@@ -1,4 +1,4 @@
-$(document).ready(function()
+function year_hist()
 {
     colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", '#d14641', '#d47b44', '#d6a646', '#d9d24a', '#4cdbb5']
     var years_address = $('#years_link').text();
@@ -14,7 +14,7 @@ $(document).ready(function()
             data.values = response.values;
 
             create_chart();
-        }    
+        }
     });
 
     function create_chart()
@@ -39,4 +39,4 @@ $(document).ready(function()
                 }
             });
     }
-});
+};

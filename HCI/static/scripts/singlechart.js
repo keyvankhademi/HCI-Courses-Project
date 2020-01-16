@@ -1,6 +1,24 @@
-$(document).ready(function ()
+
+function random_number()
 {
-    var colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", '#d14641', '#d47b44', '#d6a646', '#d9d24a', '#4cdbb5']
+    return Math.floor((Math.random() * 143) + 66);
+}
+
+function get_colors(n)
+{
+    colors = []
+
+    for(var i=0;i<n;i++)
+    {
+        colors.push('rgba(' + random_number() + ' ,' + random_number() + ' ,' + random_number() + ',1)');
+    }
+    return colors;
+}
+
+function single_chart()
+{
+    //var colors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", '#d14641', '#d47b44', '#d6a646', '#d9d24a', '#4cdbb5']
+    var colors = [];
     var d_labels = []
     var d_values = []
     var d_size = 60;
@@ -38,10 +56,10 @@ $(document).ready(function ()
                     d_title = data.title;
                     d_labels = data.labels;
                     d_values = data.values;
-                    d_size = d_labels.length;
+                    d_size = 20;
                     d_type = 'horizontalBar'
                     create_chart()
-                    
+
                     $('#size_input').val(d_size);
                 }
 
@@ -70,10 +88,12 @@ $(document).ready(function ()
 
     function create_chart()
     {
+        colors = get_colors(d_size);
+
         if (m_chart != null) m_chart.destroy();
         m_chart = new Chart(document.getElementById("chart-content"), {
             type: d_type,
-            data: 
+            data:
             {
                 labels: d_labels.slice(0, d_size),
                 datasets: [
@@ -84,10 +104,17 @@ $(document).ready(function ()
                     }
                 ]
             },
-            options: 
+            options:
             {
                 legend: { display: false },
-                
+                scales: {
+                    yAxes: [{
+                        ticks:
+                        {
+                            suggestedMin: 0
+                        }
+                    }]
+                }
             }
         });
     }
@@ -110,31 +137,4 @@ $(document).ready(function ()
         d_size = this.value;
         create_chart();
     });
-});
-
-/*
-  
-
-    $('#b_year_hist').click(function ()
-    {
-        $.ajax
-            ({
-                url: years_address,
-
-                success: function (data)
-                {
-                    d_title = data.title;
-                    d_labels = data.labels;
-                    d_values = data.values;
-                    d_size = d_labels.length;
-                    d_type = 'bar'
-                    create_chart()
-
-                    $('#size_input').val(d_size);
-                }
-
-            });
-
-        $(b_secondary).show();
-    });
-*/
+};
