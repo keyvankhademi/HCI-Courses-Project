@@ -4,10 +4,12 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import nltk
 import pandas as pd
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords, wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
 import re
 from HCI.models import Course, University, Topic
+
+wordnet.ensure_loaded()
 
 
 def generate_charts():
@@ -74,8 +76,8 @@ def get_sent_freq():
     desc = desc.lower()
 
     for sentence in tokenizer.tokenize(desc):
-       for line in filter(None, re.split("[,.\n\r!?:\)(\"]+", sentence)):
-            if(len(line) > 2):
+        for line in filter(None, re.split("[,.\n\r!?:\)(\"]+", sentence)):
+            if (len(line) > 2):
                 d.append(line.strip())
     count = Counter(d)
 
@@ -86,8 +88,8 @@ def get_sent_freq():
     }
 
     for x, y in count.most_common(200):
-       data['labels'].append(x)
-       data['values'].append(y)
+        data['labels'].append(x)
+        data['values'].append(y)
 
     return data
 
@@ -112,7 +114,7 @@ def geo_data():
     count_state = Counter(states)
 
     for c, a in count_country.most_common():
-        if c == 'United States of America' or c== "USA":
+        if c == 'United States of America' or c == "USA":
             c = 'United States'
         data['country density'].append([c, a])
     for c, a in count_state.most_common():
@@ -138,11 +140,11 @@ def get_terms_us():
 def get_terms(desc):
     punctuation = list(string.punctuation)
     stop = stopwords.words('english') + punctuation + \
-        ["The", "This", '"', "''", "'s"]
+           ["The", "This", '"', "''", "'s"]
+
     lem = WordNetLemmatizer()
 
-    count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc)
-                     if word not in stop])
+    count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc) if word not in stop])
 
     data = {'labels': [], 'values': []}
     for x, y in count.most_common():
