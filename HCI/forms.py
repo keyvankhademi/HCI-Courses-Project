@@ -1,12 +1,40 @@
 from dal import autocomplete
 from django import forms
-from django.forms import TextInput, Textarea, Select
+from django.forms import TextInput, Textarea, Select, widgets
 from django.urls import reverse_lazy
 
 from HCI import choices
-from HCI.choices import get_all_states
+from HCI.choices import get_all_states, COUNTRY_CHOICES
 from HCI.models import Course, University
 from HCI.widgets import MyDateInput
+
+
+class CourseFilterForm(forms.Form):
+    query = forms.CharField(
+        required=False,
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Search in our courses...',
+        })
+    )
+
+    country = forms.ChoiceField(
+        required=False,
+        choices=[('ALL', 'ALL')] + COUNTRY_CHOICES,
+        widget=Select(
+            attrs={
+                'class': 'form-control',
+            })
+    )
+
+    university = forms.ModelChoiceField(
+        required=False,
+        queryset=University.objects.all(),
+        widget=Select(
+            attrs={
+                'class': 'form-control',
+            })
+    )
 
 
 class CourseCreateForm(forms.ModelForm):

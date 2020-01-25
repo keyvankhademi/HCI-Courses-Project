@@ -1,12 +1,13 @@
 from dal import autocomplete
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from HCI.choices import get_all_states, ALL_STATES
-from HCI.forms import CourseCreateForm, UniversityCreateForm
+from HCI.forms import CourseCreateForm, UniversityCreateForm, CourseFilterForm
 from HCI.models import University, Course
 
 
@@ -48,14 +49,26 @@ class CourseListView(ListView):
 
     def get_queryset(self):
         my_courses = self.request.GET.get('my_courses', None)
+        query = self.request.GET.get('query', None)
+        county = self.request.GET.get('country', None)
+        university = self.request.GET.get('university', None)
+
+        q = Q()
 
         if my_courses:
             user = self.request.user
-            if not user.is_authenticated:
-                return []
-            return Course.objects.filter(user=user).all()
-        else:
-            return Course.objects.all()
+            q = q & Q(user=user)
+
+        if query:
+            q = q & (Q(name__contains=query) | Q(code__contains=query))
+
+        if county and county != 'ALL':
+            q = q & Q(university__country=county)
+
+        if university:
+            q = q & Q(university=university)
+
+        return Course.objects.filter(q).all()
 
     def get_context_data(self, **kwargs):
         context = super(CourseListView, self).get_context_data(**kwargs)
@@ -63,6 +76,8 @@ class CourseListView(ListView):
 
         for object in object_list:
             object.editable = True if object.user == self.request.user else False
+
+        context['form'] = CourseFilterForm(self.request.GET)
 
         return context
 
