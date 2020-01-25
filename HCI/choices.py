@@ -1,11 +1,11 @@
-CATEGORY_CHOICES = {
+CATEGORY_CHOICES = [
     ('Human-Computer Interaction', 'Human-Computer Interaction'),
     ('Computational Mathematics', 'Computational Mathematics'),
-}
-COUNTRY_CHOICES = {
+]
+COUNTRY_CHOICES = [
     ('USA', 'United States of America'),
     ('Canada', 'Canada'),
-}
+]
 US_STATES = {
     "AL": "Alabama",
     "AK": "Alaska",

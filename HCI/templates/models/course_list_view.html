@@ -2,6 +2,10 @@
 
 {% block title %}Courses{% endblock %}
 
+{% block style %}
+    {{ form.media }}
+{% endblock %}
+
 {% block content %}
     <h2>Courses</h2>
 
@@ -17,6 +21,33 @@
         </button>
 
     </div>
+
+    <form method="get">
+        <div class="form-row mb-3">
+            <div class="col col-md-11">
+                <label class="sr-only">Search</label>
+                {{ form.query }}
+            </div>
+            <div class="col col-md-1">
+                <button type="submit" class="btn btn-primary float-right">Search</button>
+            </div>
+        </div>
+        <div class="form-row mb-3">
+            <div class="col col-md-5">
+                {{ form.country.label_tag }}
+                {{ form.country }}
+            </div>
+            <div class="col col-md-5">
+                {{ form.university.label_tag }}
+                {{ form.university }}
+            </div>
+            <div class="col col-md-2 mt-3">
+                <button type="submit" class="btn btn-primary mb-2 float-right">Filter</button>
+            </div>
+        </div>
+
+    </form>
+
     <table class="table">
         <thead>
         <tr>
@@ -55,7 +86,9 @@
                 </td>
 
                 <td>
-                    <button class="btn btn-danger" onclick="window.location.href='{% url 'report:course'%}?course={{ course.pk }}'">report</button>
+                    <button class="btn btn-danger"
+                            onclick="window.location.href='{% url 'report:course' %}?course={{ course.pk }}'">report
+                    </button>
                 </td>
             </tr>
         {% endfor %}
