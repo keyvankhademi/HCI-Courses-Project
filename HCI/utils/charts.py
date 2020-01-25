@@ -67,18 +67,35 @@ def get_terms_freq():
     return get_terms(desc)
 
 
+def split_on_stopwords(sentence, stopwords):
+    for stop in stopwords:
+        pos = sentence.find(' ' + stop + ' ')
+        while pos != -1:
+            sentence = sentence[:pos] + ('#' * len(stop)) + sentence[pos+2+len(stop):]
+            pos = sentence.find(' ' + stop + ' ')
+
+        if sentence.find(stop + ' ') == 0:
+            sentence = ('#' * len(stop)) + sentence[(len(stop)):]
+        if sentence.find(' ' + stop) == (len(sentence) - 1 - len(stop)):
+            sentence = sentence[:len(sentence) - len(stop)] + ('#' * len(stop))
+
+    return re.split("#", sentence)
+
+
 def get_sent_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
     desc += ", ".join(course.learning_goals for course in Course.objects.all())
-
+    
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+    stop = stopwords.words('english')
     d = []
     desc = desc.lower()
 
     for sentence in tokenizer.tokenize(desc):
         for line in filter(None, re.split("[,.\n\r!?:\)(\"]+", sentence)):
-            if (len(line) > 2):
-                d.append(line.strip())
+            for topic in split_on_stopwords(line.strip(),stop):
+                if (len(topic) > 2 and topic not in stop):
+                    d.append(topic)
     count = Counter(d)
 
     data = {
@@ -87,10 +104,10 @@ def get_sent_freq():
         'values': []
     }
 
-    for x, y in count.most_common(200):
+    for x, y in count.most_common():
         data['labels'].append(x)
         data['values'].append(y)
-
+    print(data)
     return data
 
 
@@ -139,12 +156,12 @@ def get_terms_us():
 
 def get_terms(desc):
     punctuation = list(string.punctuation)
-    stop = stopwords.words('english') + punctuation + \
-           ["The", "This", '"', "''", "'s"]
+    stop = stopwords.words('english') + punctuation 
 
     lem = WordNetLemmatizer()
 
-    count = Counter([lem.lemmatize(word.lower()) for word in nltk.word_tokenize(desc) if word not in stop])
+    count = Counter([lem.lemmatize(word.lower())
+                     for word in nltk.word_tokenize(desc) if word.lower() not in stop and len(word) > 2])
 
     data = {'labels': [], 'values': []}
     for x, y in count.most_common():
