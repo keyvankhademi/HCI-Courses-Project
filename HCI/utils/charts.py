@@ -84,7 +84,7 @@ def split_on_stopwords(sentence, stopwords):
 
 def get_sent_freq():
     desc = ", ".join(topic.description for topic in Topic.objects.all())
-    desc += ", ".join(course.learning_goals for course in Course.objects.all())
+    #desc += ", ".join(course.learning_goals for course in Course.objects.all())
     
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     stop = stopwords.words('english')
@@ -107,7 +107,6 @@ def get_sent_freq():
     for x, y in count.most_common():
         data['labels'].append(x)
         data['values'].append(y)
-    print(data)
     return data
 
 
