@@ -22,8 +22,15 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'course:add' %}">Contribute</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'charts:charts' %}">Charts</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Charts
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'old-charts:charts' %}">Charts</a>
+                    <a class="dropdown-item" href="{% url 'charts:criteria' %}">Criteria</a>
+                </div>
             </li>
         </ul>
         <ul class="navbar-nav mr-md-0">
@@ -46,10 +53,10 @@
                 </li>
                 {% if user.is_staff %}
                     <form class="form-inline" style="margin-left: 5px">
-                    <button class="btn btn-outline-success float-right" type="button"
-                            onclick="window.location.href ='{% url 'admin:index' %}'">Admin
-                    </button>
-                </form>
+                        <button class="btn btn-outline-success float-right" type="button"
+                                onclick="window.location.href ='{% url 'admin:index' %}'">Admin
+                        </button>
+                    </form>
                 {% endif %}
             {% else %}
                 <form class="form-inline">
