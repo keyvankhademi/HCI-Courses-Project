@@ -22,9 +22,9 @@ def criteria_chart_view(request):
                 project = True
             if 'final' in criteria.name.lower():
                 final_exam = True
-        if project:
+        if project and not final_exam:
             project_count += 1
-        if final_exam:
+        if final_exam and not project:
             final_exam_count += 1
         if project and final_exam:
             both_count += 1
