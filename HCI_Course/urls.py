@@ -16,15 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from HCI.urls import university_url_patterns, course_url_patterns
 from HCI.views import views
-from HCI.urls import university_url_patterns, course_url_patterns, charts_url_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include(('account.urls', 'account'))),
     path('university/', include((university_url_patterns, 'HCI'), namespace='university')),
     path('course/', include((course_url_patterns, 'HCI'), namespace='course')),
-    path('charts/', include((charts_url_patterns, 'HCI'), namespace='old-charts')),
     path('charts/', include(('charts.urls', 'charts'))),
     path('report/', include(('report.urls', 'report'))),
     path('message/', include(('message.urls', 'message'))),

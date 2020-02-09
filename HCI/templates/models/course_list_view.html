@@ -9,39 +9,41 @@
 {% block content %}
     <h2>Courses</h2>
 
-    <div class="mb-3">
-        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course:list_view' %}?my_courses=true'">
+    <div class="my-3">
+        <button class="btn btn-primary"
+                onclick="window.location.href = '{% url 'course:list_view' %}?my_courses=true'">
             My Courses
         </button>
-        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course:list_view' %}'">All Courses
+        <button class="btn btn-primary" onclick="window.location.href = '{% url 'course:list_view' %}'">All
+            Courses
         </button>
-
-        <button class="btn btn-primary float-right" onclick="window.location.href = '{% url 'course:add' %}'">Add
+        <button class="btn btn-primary float-right" onclick="window.location.href = '{% url 'course:add' %}'">
+            Add
             Course
         </button>
-
     </div>
 
+
     <form method="get">
-        <div class="form-row mb-3">
-            <div class="col col-md-11">
+        <div class="form-row">
+            <div class="form-group col">
                 <label class="sr-only">Search</label>
                 {{ form.query }}
             </div>
-            <div class="col col-md-1">
+            <div class="col-1">
                 <button type="submit" class="btn btn-primary float-right">Search</button>
             </div>
         </div>
-        <div class="form-row mb-3">
-            <div class="col col-md-5">
+        <div class="form-row">
+            <div class="form-group col">
                 {{ form.country.label_tag }}
                 {{ form.country }}
             </div>
-            <div class="col col-md-5">
+            <div class="form-group col">
                 {{ form.university.label_tag }}
                 {{ form.university }}
             </div>
-            <div class="col col-md-2 mt-3">
+            <div class="col-1 my-auto">
                 <button type="submit" class="btn btn-primary mb-2 float-right">Filter</button>
             </div>
         </div>
