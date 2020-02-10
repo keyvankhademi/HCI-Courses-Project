@@ -115,7 +115,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "word_cloud")
+    os.path.join(BASE_DIR, "word_cloud"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 LOGIN_URL = reverse_lazy('account:login')
