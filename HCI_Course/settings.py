@@ -25,6 +25,7 @@ SECRET_KEY = ')hwn=t=8jtb)p1#9dicef+lnhv$7x-or8z@m4i_-w0_zy0ubz2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+PRODUCTION = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -160,21 +161,41 @@ LOGGING = {
 
 AUTH_USER_MODEL = 'account.MyUser'
 
-settings_file = open("settings.json")
-SETTINGS_JSON = json.loads(settings_file.read())
-
-EMAIL_USE_TLS = SETTINGS_JSON['EMAIL_USE_TLS']
-EMAIL_HOST = SETTINGS_JSON['EMAIL_HOST']
-EMAIL_HOST_USER = SETTINGS_JSON['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = SETTINGS_JSON['EMAIL_HOST_PASSWORD']
-EMAIL_PORT = SETTINGS_JSON['EMAIL_PORT']
-EMAIL_ACTIVATION = SETTINGS_JSON['EMAIL_ACTIVATION']
-EMAIL_PASSWORD_RESET = SETTINGS_JSON['EMAIL_PASSWORD_RESET']
-RECAPTCHA_KEY = SETTINGS_JSON['reCaptcha_key']
-RECAPTCHA_URL = SETTINGS_JSON['reCaptcha_url']
-
 import nltk
 
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
+
+if not PRODUCTION:
+
+    settings_file = open("settings.json")
+    SETTINGS_JSON = json.loads(settings_file.read())
+
+    EMAIL_USE_TLS = SETTINGS_JSON['EMAIL_USE_TLS']
+    EMAIL_HOST = SETTINGS_JSON['EMAIL_HOST']
+    EMAIL_HOST_USER = SETTINGS_JSON['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = SETTINGS_JSON['EMAIL_HOST_PASSWORD']
+    EMAIL_PORT = SETTINGS_JSON['EMAIL_PORT']
+    EMAIL_ACTIVATION = SETTINGS_JSON['EMAIL_ACTIVATION']
+    EMAIL_PASSWORD_RESET = SETTINGS_JSON['EMAIL_PASSWORD_RESET']
+    RECAPTCHA_KEY = SETTINGS_JSON['reCaptcha_key']
+    RECAPTCHA_URL = SETTINGS_JSON['reCaptcha_url']
+
+else:
+    EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+    EMAIL_HOST = os.environ['EMAIL_HOST']
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+    EMAIL_PORT = os.environ['EMAIL_PORT']
+    EMAIL_ACTIVATION = os.environ['EMAIL_ACTIVATION']
+    EMAIL_PASSWORD_RESET = os.environ['EMAIL_PASSWORD_RESET']
+    RECAPTCHA_KEY = os.environ['reCaptcha_key']
+    RECAPTCHA_URL = os.environ['reCaptcha_url']
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+    import dj_database_url
+
+    prod_db = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(prod_db)
