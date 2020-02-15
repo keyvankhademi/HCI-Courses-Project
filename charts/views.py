@@ -2,15 +2,13 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
-
 # Create your views here.
 from HCI.models import Course, Criteria
 from HCI.utils import charts
 from HCI.utils.word_cloud import generate_word_cloud
 
 
-def criteria_chart_view(request):
-
+def get_criteria_chart_data_dict():
     courses = Course.objects.all()
 
     project_count = 0
@@ -32,9 +30,19 @@ def criteria_chart_view(request):
         if project and final_exam:
             both_count += 1
 
-    return render(request, 'charts/criteria_charts.html', {
+    return {
         'labels': ["Project", "Final Exam", "Both"],
         'data': [project_count, final_exam_count, both_count],
+    }
+
+
+def criteria_chart_view(request):
+
+    criteria_chart_data_dict = get_criteria_chart_data_dict()
+
+    return render(request, 'charts/criteria_charts.html', {
+        'data': criteria_chart_data_dict['data'],
+        'labels': criteria_chart_data_dict['labels'],
     })
 
 

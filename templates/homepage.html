@@ -1,17 +1,44 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block style %}
+{% block script %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 {% endblock %}
 
 {% block content %}
-    <h1 align="center">
-        Title Here
+    <h1>
+        Courses
     </h1>
-    <h2 align="center">
-        First Header
-    </h2>
-    <p align="center">
-        Some text or description here
-    </p>
+
+    <div class="container-fluid">
+        <div class="row">
+            <button class="btn btn-primary my-3 mr-1" onclick="window.location.href='{% url 'course:list_view' %}'">Show
+                All
+                Courses
+            </button>
+            <button class="btn btn-primary my-3 mr-1" onclick="window.location.href='{% url 'course:add' %}'">Contribute
+                Courses
+            </button>
+        </div>
+    </div>
+
+    {% include 'course/course_list_table_snippet.html' with object_list=courses %}
+
+    <h1>
+        Charts
+    </h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <button class="btn btn-primary my-3 mr-1" onclick="window.location.href='{% url 'charts:charts' %}'">Show
+                More Charts
+            </button>
+        </div>
+    </div>
+
+    <div style="width: 50%; margin: 0 auto">
+        {% include 'charts/criteria_chart_snippet.html' with labels=sample_chart_labels data=sample_chart_data %}
+    </div>
+
 {% endblock %}
