@@ -1,6 +1,6 @@
 CATEGORY_CHOICES = [
     ('Human-Computer Interaction', 'Human-Computer Interaction'),
-    ('Computational Mathematics', 'Computational Mathematics'),
+    ('Artificial Intelligence', 'Artificial Intelligence'),
 ]
 COUNTRY_CHOICES = [
     ('USA', 'United States of America'),
