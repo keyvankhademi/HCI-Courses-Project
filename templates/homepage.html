@@ -7,27 +7,45 @@
 {% endblock %}
 
 {% block content %}
+    <div class="jumbotron">
+        <h1 class="display-3" align="center">
+            What We Teach
+        </h1>
+        <h4>A Site to Host and Analyze University Course Syllabi</h4>
+        <p>
+            This is an online tool to gather, host, and analyze educational patterns in university course syllabi. Using
+            the
+            syllabus information, we wish to gain a better understanding of topic coverage, theories taught, and
+            techniques
+            practiced in the classroom. Furthermore, this tool enables regional comparisons of the data in the system.
+            Ultimately, we hope to uncover pedagogical choices made in our courses by analyzing syllabi information.
+        </p>
+    </div>
     <h1>
         Courses
     </h1>
 
+    {% include 'course/course_list_table_snippet.html' with object_list=courses %}
+
     <div class="container-fluid">
         <div class="row">
-            <button class="btn btn-primary my-3 mr-1" onclick="window.location.href='{% url 'course:list_view' %}'">Show
-                All
-                Courses
+            <button class="btn btn-primary mr-1" onclick="window.location.href='{% url 'course:list_view' %}'">Show
+                More
             </button>
-            <button class="btn btn-primary my-3 mr-1" onclick="window.location.href='{% url 'course:add' %}'">Contribute
+            <button class="btn btn-primary mr-1" onclick="window.location.href='{% url 'course:add' %}'">Contribute
+                a
                 Courses
             </button>
         </div>
     </div>
 
-    {% include 'course/course_list_table_snippet.html' with object_list=courses %}
-
-    <h1>
+    <h1 class="my-3">
         Charts
     </h1>
+
+    <div style="width: 50%; margin: 0 auto">
+        {% include 'charts/criteria_chart_snippet.html' with labels=sample_chart_labels data=sample_chart_data %}
+    </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -35,10 +53,6 @@
                 More Charts
             </button>
         </div>
-    </div>
-
-    <div style="width: 50%; margin: 0 auto">
-        {% include 'charts/criteria_chart_snippet.html' with labels=sample_chart_labels data=sample_chart_data %}
     </div>
 
 {% endblock %}
